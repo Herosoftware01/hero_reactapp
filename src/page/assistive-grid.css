@@ -1,0 +1,49 @@
+/* Minimal styles for assistive grid and AI dialog */
+#assistive-grid {
+  padding: 8px;
+}
+.api-banner {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.api-retry {
+  background: #ffffff;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.e-suggestions {
+  padding: 8px;
+  font-size: 13px;
+}
+.e-suggestion-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.e-suggestion-list li {
+  padding: 6px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.e-suggestion-list li:hover {
+  background: #f3f3f3;
+}
+.response-item-content .response-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.response-item-content .e-assistview-icon {
+  font-size: 18px;
+}
