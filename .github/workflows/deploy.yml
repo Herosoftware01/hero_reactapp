@@ -1,4 +1,4 @@
-name: Deploy React App to IIS Local Path
+name: Deploy React App to Local IIS
 
 on:
   push:
@@ -10,17 +10,26 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - name: Checkout code
+    # 1️⃣ Checkout code
+    - name: Checkout repo
       uses: actions/checkout@v4
 
+    # 2️⃣ Install dependencies
     - name: Install dependencies
       run: npm install
 
+    # 3️⃣ Build React app
     - name: Build React app
       run: npm run build
 
+    # 4️⃣ Copy web.config to build folder
     - name: Copy web.config
       run: copy web.config dist\web.config
 
-    - name: Deploy to IIS folder
+    # 5️⃣ Deploy to IIS folder
+    - name: Deploy to IIS
       run: xcopy dist "D:\reactjs\dist" /E /H /C /I /Y
+
+    # 6️⃣ Restart IIS to pick up changes
+    - name: Restart IIS
+      run: iisreset
