@@ -213,7 +213,7 @@ function Ordsync() {
       >
         <ColumnsDirective>
           <ColumnDirective field="jobno_oms" headerText="Job No11" width="150" />
-          <ColumnDirective field="styleid" headerText="Style ID" width="120" />
+          <ColumnDirective field="styleid" headerText="Style ID Local" width="120" />
           <ColumnDirective field="company_name" headerText="Company" width="200" />
           <ColumnDirective field="pono" headerText="PO No" width="120" />
           <ColumnDirective field="reference" headerText="Reference" width="250" />
