@@ -28,4 +28,3 @@ jobs:
     - name: Restart IIS
       run: iisreset
 
-      
