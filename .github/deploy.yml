@@ -1,4 +1,4 @@
-name: Deploy to IIS
+name: Deploy React App to IIS via FTP
 
 on:
   push:
@@ -10,15 +10,28 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    # 1️⃣ Checkout repository
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # 2️⃣ Install dependencies
     - name: Install dependencies
       run: npm install
 
+    # 3️⃣ Build React app
     - name: Build React app
       run: npm run build
 
-    - name: Deploy to IIS folder
-      run: |
-        xcopy build "D:\reactjs" /E /H /C /I /Y
+    # 4️⃣ Copy web.config to build folder (ensures routing)
+    - name: Add web.config
+      run: copy web.config build\web.config
+
+    # 5️⃣ Deploy to IIS via FTP
+    - name: Deploy via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server: ${{ secrets.IIS_FTP_HOST }}
+        username: ${{ secrets.IIS_FTP_USER }}
+        password: ${{ secrets.IIS_FTP_PASSWORD }}
+        local-dir: dist
+        server-dir: D:\reactjs
