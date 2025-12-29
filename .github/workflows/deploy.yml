@@ -34,4 +34,4 @@ jobs:
         username: ${{ secrets.IIS_FTP_USER }}
         password: ${{ secrets.IIS_FTP_PASSWORD }}
         local-dir: dist
-        server-dir: D:\reactjs
+        server-dir: D:\reactjs\react
