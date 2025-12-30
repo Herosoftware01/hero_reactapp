@@ -38,10 +38,10 @@ export default function App() {
         {/* Layout wrapper for nested routes */}
         <Route path="/" element={<Layout />}>
           {/* Default page */}
-          <Route index element={<Ordsync />} />
-          <Route path="ordsync" element={<Ordsync />} />
-          <Route path="details" element={<OrderDetails />} />
-          <Route path="OrderGridWithDetail1" element={<OrdersGridWithDetails />} />
+          <Route path='/' element={<Ordsync />} />
+          <Route path="/ordsync" element={<Ordsync />} />
+          <Route path="/details" element={<OrderDetails />} />
+          <Route path="/OrderGridWithDetail1" element={<OrdersGridWithDetails />} />
         </Route>
 
         {/* Independent route for new grid */}
