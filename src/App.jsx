@@ -31,6 +31,7 @@ import OrderDetails from './page/OrderDetails';
 import Ordsync from './page/ordsync';
 import OrdersGridWithDetails from './page/newprn';
 import DailyReport from './page/daily';
+import VehicleReport from './Vehicle/vehicle';
 
 export default function App() {
   return (
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="details" element={<OrderDetails />} />
           <Route path="OrderGridWithDetail1" element={<OrdersGridWithDetails />} />
           <Route path="DailyReport" element={<DailyReport />} />
+          <Route path="Vehicle_Report" element={<VehicleReport />} />
         </Route>
 
         {/* Independent route for new grid */}
@@ -52,3 +54,4 @@ export default function App() {
     </BrowserRouter>
   );
 }
+

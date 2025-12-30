@@ -99,6 +99,9 @@ export default function Layout() {
           <Link onClick={() => setOpen(false)} to="DailyReport" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Daily
           </Link>
+           <Link onClick={() => setOpen(false)} to="Vehicle_Report" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+            Nantha
+          </Link>
         </nav>
 
         {/* Footer */}
