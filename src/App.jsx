@@ -1,29 +1,3 @@
-// import React from 'react'
-// import {BrowserRouter, Routes, Route} from 'react-router-dom'
-// import Ordsync from './page/ordsync'
-// import OrderGridWithDetail from './page/orddetails'
-// import ErrorBoundary from './ErrorBoundary'
-// import SidebarWithMenu from './page/sidebar-menu.jsx'
-
-// export default function App() {
-//   return (
-//     <>
-//      <BrowserRouter>
-//       <ErrorBoundary>
-//         <Routes>
-//           <Route path="/" element={<Ordsync/>}></Route>
-//           <Route path="/details" element={<OrderGridWithDetail/>}></Route>
-//           <Route path="/sidebar" element={<SidebarWithMenu/>}></Route>
-//         </Routes>
-//       </ErrorBoundary>
-//     </BrowserRouter>
-//     </>
-//   )
-// }
-
-// src/App.jsx
-
-
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
@@ -33,6 +7,7 @@ import OrdersGridWithDetails from './page/order/newprn';
 import DailyReport from './page/daily';
 import SEODashboard from './page/Dashboard/dashboard';
 import Login from './components/login'
+import VehicleReport from './page/Vehicle/vehicle';
 
 export default function App() {
   return (
@@ -48,6 +23,7 @@ export default function App() {
           <Route path="OrderGridWithDetail1" element={<OrdersGridWithDetails />} />
           <Route path="SEODashboard" element={<SEODashboard />} />
           <Route path="DailyReport" element={<DailyReport />} />
+          <Route path="Vehicle_Report" element={<VehicleReport />} />
         </Route>
 
         {/* Independent route for new grid */}
@@ -56,3 +32,4 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
