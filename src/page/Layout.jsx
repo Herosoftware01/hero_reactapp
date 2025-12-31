@@ -100,7 +100,7 @@ export default function Layout() {
             Daily
           </Link>
            <Link onClick={() => setOpen(false)} to="Vehicle_Report" className="block px-3 py-2 rounded-lg hover:bg-white/20">
-            Nantha
+            Vehicle Report
           </Link>
         </nav>
 
