@@ -2,8 +2,8 @@
 import { Outlet, Link } from 'react-router-dom';
 import { useState } from 'react';
 
-const SIDEBAR_WIDTH = 250;
-const HEADER_HEIGHT = 56;
+// const SIDEBAR_WIDTH = 250;
+// const HEADER_HEIGHT = 56;
 
 export default function Layout() {
   const [open, setOpen] = useState(false); // ✅ mobile default closed
@@ -116,17 +116,21 @@ export default function Layout() {
       <main
         className="
           pt-14
-          min-h-screen
+          h-screen
           bg-slate-100
           transition-all
           ml-0
           md:ml-[250px]
+          overflow-hidden
         "
       >
         <div
-          className="p-4 h-[calc(100vh-56px)] overflow-y-auto"
+          className="h-[calc(100vh-56px)] overflow-y-auto"
           style={{ WebkitOverflowScrolling: 'touch' }}
         >
+          <Outlet />
+        </div>
+        <div className="h-full w-full flex items-center justify-center relative">
           <Outlet />
         </div>
       </main>
