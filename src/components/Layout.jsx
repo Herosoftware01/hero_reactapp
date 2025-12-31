@@ -82,7 +82,10 @@ export default function Layout() {
         {/* Navigation */}
         <nav className="px-4 space-y-2 text-sm">
           <Link onClick={() => setOpen(false)} to="/" className="block px-3 py-2 rounded-lg hover:bg-white/20">
-            Dashboard
+            Home
+          </Link>
+          <Link onClick={() => setOpen(false)} to="/login" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+            Login Form
           </Link>
           <Link onClick={() => setOpen(false)} to="/details" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Order Details
@@ -95,9 +98,6 @@ export default function Layout() {
           </Link>
           <Link onClick={() => setOpen(false)} to="#" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Reports
-          </Link>
-          <Link onClick={() => setOpen(false)} to="DailyReport" className="block px-3 py-2 rounded-lg hover:bg-white/20">
-            Daily
           </Link>
            <Link onClick={() => setOpen(false)} to="Vehicle_Report" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Vehicle Report

@@ -16,7 +16,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Entry />} />
           <Route path="ordsync" element={<Ordsync />} />
-          <Route path="Login" element={<Login />} />
+          <Route path="login" element={<Login />} />
           <Route path="details" element={<OrderDetails />} />
           <Route path="OrderGridWithDetail1" element={<OrdersGridWithDetails />} />
           <Route path="SEODashboard" element={<SEODashboard />} />
