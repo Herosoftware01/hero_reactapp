@@ -1,8 +1,7 @@
 
-/* Local material.css that pulls the official Syncfusion EJ2 Material theme from CDN */
-/* Pin a version for stability; you can also use 'latest' */
+/* Syncfusion EJ2 Material theme from CDN (pin version) */
 @import url("https://cdn.syncfusion.com/ej2/25.1.0/material.css");
 
-/* If you switch to Bootstrap theme later, use:
-   @import url("https://cdn.syncfusion.com/ej2/25.1.0/bootstrap5.css");
+/* If you prefer latest (less stable across versions):
+   @import url("https://cdn.syncfusion.com/ej2/latest/material.css");
 */

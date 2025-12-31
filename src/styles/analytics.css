@@ -1,0 +1,100 @@
+
+/* Page background and font */
+.light {
+  background: #f3f4f6; /* light grey */
+  min-height: 100vh;
+  color: #111827;
+  font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Header bar */
+#analytic_head .header.header-light {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 10px 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06);
+}
+
+#analytic_head .menu .e-icons.expand {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #eef2ff; color: #1e40af; border: 1px solid #e5e7eb;
+}
+
+#analytic_head .analysis {
+  font-weight: 700; font-size: 18px; color: #111827;
+}
+
+#analytic_head .right-content .information {
+  display: flex; align-items: center; gap: 10px;
+}
+#analytic_head .right-content .image {
+  background: url('https://i.pravatar.cc/36') center/cover no-repeat;
+  width: 36px; height: 36px;
+  border-radius: 50%; border: 2px solid #e5e7eb;
+}
+#analytic_head .right-content .text-content {
+  font-weight: 600; color: #111827;
+}
+
+/* Sidebar dock */
+#dockSideDash .content-area .dock ul { list-style: none; padding: 8px 6px; margin: 0; }
+#dockSideDash .content-area .dock .sidebar-item { margin: 12px 0; display: flex; align-items: center; justify-content: center; }
+#dockSideDash .sidebar-item .e-icons {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #ffffff; color: #2563eb; border: 1px solid #e5e7eb; cursor: pointer;
+}
+#dockSideDash .filterHover .e-icons.filter { background: #06b6d4; color: #ffffff; }
+
+/* Dashboard area */
+.dashboardParent { padding: 10px; }
+#analytic_dashboard { background: transparent; }
+
+/* Panel header inside DashboardLayout */
+.e-dashboardlayout .e-panel .e-panel-header {
+  background: #ffffff; color: #111827; border-bottom: 1px solid #e5e7eb;
+  padding: 8px 12px; font-weight: 600;
+}
+
+/* Ensure panel content fills height */
+.e-dashboardlayout .e-panel .e-panel-container { height: 100%; }
+
+/* Cards like screenshot */
+.card.card-light {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center; gap: 12px;
+  background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 12px; height: 100%;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+.card.card-light .e-icons.session,
+.card.card-light .e-icons.profile,
+.card.card-light .e-icons.views {
+  width: 48px; height: 48px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #2563eb; background: #e0f2fe; border: 1px solid #e5e7eb;
+}
+.card.card-light .card-content.text { font-size: 14px; color: #6b7280; }
+.card.card-light .card-content.number { font-size: 18px; font-weight: 700; color: #111827; }
+
+/* Charts and Map containers */
+#pie, #pieChart, #visitorsChart, #colChart, #maps { width: 100%; height: 100%; }
+
+.e-tooltip-wrap {
+  background: #111827 !important; color: #ffffff !important; border: 1px solid #374151 !important;
+}
+
+/* Icon placeholders (emoji if Syncfusion icons unavailable) */
+.e-icons.home::before           { content: "☰"; }
+.e-icons.filter::before         { content: "⟳"; }
+.e-icons.analyticsChart::before { content: "📈"; }
+.e-icons.settings::before       { content: "⚙"; }
+.e-icons.analytics::before      { content: "📊"; }
+.e-icons.session::before        { content: "◌"; }
+.e-icons.profile::before        { content: "👤"; }
+.e-icons.views::before          { content: "👁"; }
+.e-icons::before { font-size: 18px; line-height: 1; }

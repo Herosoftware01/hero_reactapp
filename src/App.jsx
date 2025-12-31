@@ -26,11 +26,13 @@
 
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './page/Layout';
+import Layout from './components/Layout';
 import OrderDetails from './page/OrderDetails';
 import Ordsync from './page/ordsync';
-import OrdersGridWithDetails from './page/newprn';
+import OrdersGridWithDetails from './page/order/newprn';
 import DailyReport from './page/daily';
+import SEODashboard from './page/Dashboard/dashboard';
+import Login from './components/login'
 
 export default function App() {
   return (
@@ -39,18 +41,13 @@ export default function App() {
         {/* Layout wrapper for nested routes */}
         <Route path="/" element={<Layout />}>
           {/* Default page */}
-<<<<<<< HEAD
-          <Route path='/' element={<Ordsync />} />
-          <Route path="/ordsync" element={<Ordsync />} />
-          <Route path="/details" element={<OrderDetails />} />
-          <Route path="/OrderGridWithDetail1" element={<OrdersGridWithDetails />} />
-=======
           <Route index element={<Ordsync />} />
           <Route path="ordsync" element={<Ordsync />} />
+          <Route path="Login" element={<Login />} />
           <Route path="details" element={<OrderDetails />} />
           <Route path="OrderGridWithDetail1" element={<OrdersGridWithDetails />} />
+          <Route path="SEODashboard" element={<SEODashboard />} />
           <Route path="DailyReport" element={<DailyReport />} />
->>>>>>> 4eba7c6eb5fc12decc67113de3a8caa7a00d97f6
         </Route>
 
         {/* Independent route for new grid */}

@@ -90,7 +90,7 @@ export default function Layout() {
           <Link onClick={() => setOpen(false)} to="/OrderGridWithDetail1" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Order Print
           </Link>
-          <Link onClick={() => setOpen(false)} to="#" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+          <Link onClick={() => setOpen(false)} to="SEODashboard" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Customers
           </Link>
           <Link onClick={() => setOpen(false)} to="#" className="block px-3 py-2 rounded-lg hover:bg-white/20">
