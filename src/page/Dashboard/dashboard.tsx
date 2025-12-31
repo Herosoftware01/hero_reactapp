@@ -17,7 +17,7 @@ import {
   Tooltip, DataLabel, DateTime, SplineAreaSeries, Legend, LineSeries, Selection, AccumulationSelection, Inject
 } from '@syncfusion/ej2-react-charts';
 
-import './analytics.css';
+import '../../styles/analytics.css';
 import continentDataJson from './default-datasource.json';
 
 const continentData = (Array.isArray((continentDataJson as any).default)

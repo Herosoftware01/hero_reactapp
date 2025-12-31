@@ -28,7 +28,7 @@ import {
 import { ClickEventArgs } from "@syncfusion/ej2-navigations";
 import { DataManager, WebApiAdaptor, Query } from "@syncfusion/ej2-data";
 
-import "./assistive-grid.css";
+import "../../styles/assistive-grid.css";
 import { fetchAI } from "./AIModel";
 
 let assistView: AIAssistViewComponent;
