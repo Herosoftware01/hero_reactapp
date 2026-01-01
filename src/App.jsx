@@ -8,6 +8,8 @@ import SEODashboard from './page/Dashboard/dashboard';
 import Login from './components/login'
 import VehicleReport from './page/Vehicle/vehicle';
 import Entry from './page/Entryscreen/Entry';
+import Card from './page/Card/Card';
+import Card2 from './page/Card/Card2';
 
 export default function App() {
   return (
@@ -21,6 +23,8 @@ export default function App() {
           <Route path="OrderGridWithDetail1" element={<OrdersGridWithDetails />} />
           <Route path="SEODashboard" element={<SEODashboard />} />
           <Route path="Vehicle_Report" element={<VehicleReport />} />
+          <Route path="card" element={<Card />} />
+           <Route path="card-details" element={<Card2 />} />
         </Route>
 
       </Routes>

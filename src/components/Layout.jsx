@@ -102,6 +102,12 @@ export default function Layout() {
            <Link onClick={() => setOpen(false)} to="Vehicle_Report" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Vehicle Report
           </Link>
+           <Link onClick={() => setOpen(false)} to="card" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+            Card-Admin
+          </Link>
+           <Link onClick={() => setOpen(false)} to="card-details" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+            Card-Details
+          </Link>
         </nav>
 
         {/* Footer */}
@@ -130,9 +136,9 @@ export default function Layout() {
         >
           <Outlet />
         </div>
-        <div className="h-full w-full flex items-center justify-center relative">
+        {/* <div className="h-full w-full flex items-center justify-center relative">
           <Outlet />
-        </div>
+        </div> */}
       </main>
     </div>
   );
