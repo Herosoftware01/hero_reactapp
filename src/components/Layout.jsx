@@ -1,19 +1,24 @@
 
-// src/components/Layout.jsx
 import { Outlet, Link } from 'react-router-dom';
 import { useState } from 'react';
 
+// const SIDEBAR_WIDTH = 250;
+// const HEADER_HEIGHT = 56;
+
 export default function Layout() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // ✅ mobile default closed
 
   return (
     <div className="min-h-screen bg-slate-100">
-      {/* Header */}
+      {/* ───────────────── HEADER ───────────────── */}
       <header
         className="
-          fixed top-0 left-0 right-0 h-14 flex items-center px-4
-          text-white bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900
-          shadow-md z-50
+          fixed top-0 left-0 right-0
+          h-14 flex items-center px-4
+          text-white
+          bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900
+          shadow-md
+          z-50
         "
       >
         <button
@@ -39,7 +44,7 @@ export default function Layout() {
         </button>
       </header>
 
-      {/* Mobile overlay */}
+      {/* ───────────────── MOBILE OVERLAY ───────────────── */}
       {open && (
         <div
           className="fixed inset-0 bg-black/40 z-30 md:hidden"
@@ -47,12 +52,15 @@ export default function Layout() {
         />
       )}
 
-      {/* Sidebar */}
+      {/* ───────────────── SIDEBAR ───────────────── */}
       <aside
         className={`
-          fixed left-0 top-14 h-[calc(100vh-56px)] w-[250px]
+          fixed left-0 top-14
+          h-[calc(100vh-56px)]
+          w-[250px]
           bg-gradient-to-b from-sky-400 via-indigo-500 to-pink-500
-          text-white flex flex-col shadow-lg z-40
+          text-white flex flex-col shadow-lg
+          z-40
           transform transition-transform duration-300 ease-in-out
           ${open ? 'translate-x-0' : '-translate-x-full'}
           md:translate-x-0
@@ -85,19 +93,22 @@ export default function Layout() {
           <Link onClick={() => setOpen(false)} to="/ordsync" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Order Sync
           </Link>
-          <Link onClick={() => setOpen(false)} to="/order-grid-with-detail1" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+          <Link onClick={() => setOpen(false)} to="/OrderGridWithDetail1" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Order Print
           </Link>
-          <Link onClick={() => setOpen(false)} to="/seo-dashboard" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+          <Link onClick={() => setOpen(false)} to="SEODashboard" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Customers
           </Link>
-          <Link onClick={() => setOpen(false)} to="/vehicle-report" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+          <Link onClick={() => setOpen(false)} to="#" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+            Reports
+          </Link>
+           <Link onClick={() => setOpen(false)} to="Vehicle_Report" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Vehicle Report
           </Link>
-          <Link onClick={() => setOpen(false)} to="/card" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+           <Link onClick={() => setOpen(false)} to="card" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Card-Admin
           </Link>
-          <Link onClick={() => setOpen(false)} to="/card-details" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+           <Link onClick={() => setOpen(false)} to="card-details" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Card-Details
           </Link>
         </nav>
@@ -110,15 +121,27 @@ export default function Layout() {
         </div>
       </aside>
 
-      {/* Main */}
+      {/* ───────────────── MAIN CONTENT ───────────────── */}
       <main
         className="
-          pt-14 h-screen bg-slate-100 transition-all ml-0 md:ml-[250px] overflow-hidden
+          pt-14
+          h-screen
+          bg-slate-100
+          transition-all
+          ml-0
+          md:ml-[250px]
+          overflow-hidden
         "
       >
-        <div className="h-[calc(100vh-56px)] overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <div
+          className="h-[calc(100vh-56px)] overflow-y-auto"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
           <Outlet />
         </div>
+        {/* <div className="h-full w-full flex items-center justify-center relative">
+          <Outlet />
+        </div> */}
       </main>
     </div>
   );
