@@ -266,7 +266,7 @@ function FiveColumnDataTable() {
             variant="outlined" size="small" 
             onClick={() => setShowFiltersMobile(!showFiltersMobile)}
             sx={{ 
-              gridColumn: 'span 3', height: '40px', minWidth: 0, fontSize: '0.7rem',
+              gridColumn: 'span 4', height: '40px', minWidth: 0, fontSize: '0.7rem',
               display: { xs: 'block', md: 'none' } 
             }}
           >
