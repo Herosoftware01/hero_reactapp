@@ -11,7 +11,7 @@ const Entry = () => {
         backgroundSize: 'cover'
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/20 to-black/20"></div>
 
       {/* Hero Card */}
       <div className="relative z-10 text-center px-6">
@@ -26,7 +26,6 @@ const Entry = () => {
           <h1 className="text-white text-5xl md:text-6xl font-black tracking-tighter mb-6">
             HERO <span className="text-blue-500">SOFTWARE</span>
           </h1>
-          
         </div>
       </div>
     </div>
