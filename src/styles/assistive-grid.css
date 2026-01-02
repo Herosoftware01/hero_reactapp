@@ -1,49 +1,67 @@
-/* Minimal styles for assistive grid and AI dialog */
-#assistive-grid {
-  padding: 8px;
-}
-.api-banner {
-  background: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeeba;
-  padding: 10px 12px;
-  margin-bottom: 8px;
-  border-radius: 4px;
-  font-size: 13px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.api-retry {
-  background: #ffffff;
-  border: 1px solid #ccc;
-  padding: 6px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.e-suggestions {
-  padding: 8px;
-  font-size: 13px;
-}
-.e-suggestion-list ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.e-suggestion-list li {
-  padding: 6px 8px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-.e-suggestion-list li:hover {
-  background: #f3f3f3;
-}
-.response-item-content .response-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+
+/* ─────────────────────────────────────────────
+   Lift toolbar above header, add 2px top gap
+   ───────────────────────────────────────────── */
+
+/* Grid container: give space on top for the lifted toolbar */
+#assistive-grid .e-grid {
+  position: relative;
+  /* Toolbar height ~42px; we also want 2px gap above grid */
+  padding-top: 44px; /* 42 + 2 */
 }
 
-.response-item-content .e-assistview-icon {
-  font-size: 18px;
+/* Place the toolbar above the grid header */
+#assistive-grid .e-grid .e-toolbar {
+  position: absolute;
+  /* 2px from the container top as requested */
+  top: 2px;
+  left: 12px;
+  right: 12px;               /* let it span full width so we can push AI Assist to right */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;                 /* space between toolbar items (Search & button) */
+  z-index: 2;                /* keep toolbar above header area */
+}
+
+/* Keep header flush; toolbar is floating above */
+#assistive-grid .e-gridheader {
+  margin-top: 0;
+}
+
+/* Make sure the search input looks compact and clean */
+#assistive-grid .e-toolbar .e-search {
+  margin: 0;
+  min-width: 240px;          /* optional: widen search box; adjust as you like */
+}
+
+/* Push the AI Assist button to the right side */
+#assistive-grid .e-toolbar #ai-assist-btn {
+  margin-left: auto;         /* this sends AI Assist to the extreme right */
+}
+
+/* Optional: reduce toolbar item borders if theme adds them */
+#assistive-grid .e-toolbar-items {
+  border: none;
+}
+
+/* ─────────────────────────────────────────────
+   (Optional) Image cell tidy if not already added
+   ───────────────────────────────────────────── */
+#assistive-grid .e-grid .e-rowcell img {
+  display: block;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: #fff;
+}
+
+#assistive-grid .e-templatecell {
+  overflow: visible;
 }

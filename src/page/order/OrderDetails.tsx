@@ -49,7 +49,7 @@ function OrderGridWithDetail() {
         else if (s.includes('open')) Status = 'Open';
 
         return {
-            Id: t.Id || t.id || t.task_id || t.name || t.title || `${t.jobno_oms_id || ''}-${Math.random().toString(36).slice(2,8)}`,
+            Id: t.Id || t.id || t.task_id || t.name || t.title || `${t.jobno_oms || ''}-${Math.random().toString(36).slice(2,8)}`,
             Summary: t.Summary || t.summary || t.description || t.desc || t.note || '',
             Status,
             Estimate: Number(t.Estimate ?? t.estimate ?? t.estimatedHours ?? 0),
@@ -85,7 +85,7 @@ function OrderGridWithDetail() {
                     g.detailRowModule.expand(tr);
                 }
                 // trigger fetch for tasks
-                const rowData = orderData.find((r:any) => String(r?.jobno_oms_id) === String(jobToOpen));
+                const rowData = orderData.find((r:any) => String(r?.jobno_oms) === String(jobToOpen));
                 if (rowData) setTimeout(() => { detailDataBound({ data: rowData }); }, 50);
             } catch (err) {
                 console.error('auto-open detail error', err);
@@ -142,7 +142,7 @@ function OrderGridWithDetail() {
                     const loading = loadingDetails && loadingDetails[pk];
                     if (!already && !loading) {
                         // find the order object from orderData and call detailDataBound with it
-                        const row = (orderData || []).find((r: any) => String(r?.jobno_oms_id) === String(pk));
+                        const row = (orderData || []).find((r: any) => String(r?.jobno_oms) === String(pk));
                         if (row) {
                             // call the same handler used by Grid's expand event
                             // but do it asynchronously to give the DOM a moment to insert the detail container
@@ -161,7 +161,7 @@ function OrderGridWithDetail() {
     };
 
     const expandToggleTemplate = (props: any) => {
-        const pk = props?.jobno_oms_id;
+        const pk = props?.jobno_oms;
         return (
             <a
                 href="#"
@@ -243,7 +243,7 @@ function OrderGridWithDetail() {
                 // If the order objects already include tasks, normalize and cache them for detail templates
                 const initialDetails: Record<string, any[]> = {};
                 dataArray.forEach((o: any) => {
-                    const id = o?.jobno_oms_id;
+                    const id = o?.jobno_oms;
                     const candidates = o?.tasks || o?.task_list || o?.task || o?.tasks_list || [];
                     if (id && candidates && candidates.length) {
                         initialDetails[id] = candidates.map(normalizeTask);
@@ -262,7 +262,7 @@ function OrderGridWithDetail() {
     
     // This event would be used to fetch detail data for the specific row if the API supported it
     const detailDataBound = async (args) => {
-        const id = args?.data?.jobno_oms_id;
+        const id = args?.data?.jobno_oms;
         console.log("Expanding row:", id);
         if (!id) return;
         // If already fetched, do nothing
@@ -273,7 +273,7 @@ function OrderGridWithDetail() {
 
         try {
             // Try the dedicated tasks endpoint first
-            let resp = await fetch(`http://127.0.0.1:8000/order_panda/${id}/tasks/`);
+            let resp = await fetch(`https://app.herofashion.com/order_panda/${id}/tasks/`);
             if (resp.ok) {
                 const taskData = await resp.json();
                 const tasksArray = Array.isArray(taskData) ? taskData : [taskData];
@@ -284,7 +284,7 @@ function OrderGridWithDetail() {
             }
 
             // If tasks endpoint not found, try fetching the order itself and look for a tasks field
-            resp = await fetch(`http://127.0.0.1:8000/order_panda/${id}/`);
+            resp = await fetch(`https://app.herofashion.com/order_panda/${id}/`);
             if (resp.ok) {
                 const order = await resp.json();
                 const candidates = order?.tasks || order?.task_list || order?.task || order?.tasks_list || [];
@@ -308,7 +308,7 @@ function OrderGridWithDetail() {
 
     const cardTemplate = (props) => {
         // props may include __order_balances and __order_summary when rendered inside the detail template
-        const orderId = props.__order_id || props.jobno_oms_id || '';
+        const orderId = props.__order_id || props.jobno_oms || '';
         const orderCompany = props.__order_summary?.company || props.company_name || '';
         const balances = props.__order_balances || {};
         const balanceEntries = Object.keys(balances || {}).slice(0,3).map(k => ({ k, v: balances[k] }));
@@ -390,7 +390,7 @@ function OrderGridWithDetail() {
 
     const gridDetailTemplate = (props: any) => {
         const headertext = [{ text: "Taskboard" }, { text: "Burndown Chart" }];
-        const id = props?.jobno_oms_id;
+        const id = props?.jobno_oms;
         const isLoading = id ? !!loadingDetails[id] : false;
 
         // Build balances/details list dynamically from order props (regex) and add fallback field names present in your API
@@ -408,13 +408,13 @@ function OrderGridWithDetail() {
         const tasksRaw = id ? (detailDataMap[id] || []) : [];
         // attach order-level balances/summary into each task so Kanban card template can show them
         const orderBalancesObj = balanceFields.reduce((acc:any, k) => { acc[k] = props[k]; return acc; }, {});
-        const tasksForKanban = tasksRaw.map(t => ({ ...t, __order_balances: orderBalancesObj, __order_id: id, __order_summary: { company: props?.company_name, jobno: props?.jobno_oms_id } }));
+        const tasksForKanban = tasksRaw.map(t => ({ ...t, __order_balances: orderBalancesObj, __order_id: id, __order_summary: { company: props?.company_name, jobno: props?.jobno_oms } }));
         const renderTaskContent = () => {
             if (isLoading) {
                 return (
                     <div style={{ padding: '12px 20px' }}>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(140px,1fr))', gap: 8, marginBottom: 12 }}>
-                            <div><b>ID:</b> {props?.jobno_oms_id}</div>
+                            <div><b>ID:</b> {props?.jobno_oms}</div>
                             <div><b>Style:</b> {props?.styleid}</div>
                             <div><b>PO:</b> {props?.pono}</div>
                             <div><b>Company:</b> {props?.company_name}</div>
@@ -431,10 +431,10 @@ function OrderGridWithDetail() {
         const orderSummary = (
             <div style={{ padding: '12px 20px', borderBottom: '1px solid #eee', display: 'flex', gap: 20, alignItems: 'flex-start' }}>
                 <div style={{ width: 90 }}>
-                    <img src={props?.mainimagepath || props?.image_order} alt={props?.jobno_oms_id} style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 6 }} onError={(e:any) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/80' }} />
+                    <img src={props?.mainimagepath || props?.image_order} alt={props?.jobno_oms} style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 6 }} onError={(e:any) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/80' }} />
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(120px, 1fr))', gap: 8 }}>
-                    <div><b>ID:</b> {props?.jobno_oms_id}</div>
+                    <div><b>ID:</b> {props?.jobno_oms}</div>
                     <div><b>Job #:</b> {props?.jobnoomsnew}</div>
                     <div><b>Style:</b> {props?.styleid}</div>
                     <div><b>PO:</b> {props?.pono}</div>
@@ -519,7 +519,7 @@ function OrderGridWithDetail() {
     // --- Template for the Main Grid Image Column ---
     const imageTemplate = (props) => (
         <div className='image'>
-            <img src={props.mainimagepath} alt={props.jobno_oms_id} onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/150'; }} />
+            <img src={props.mainimagepath} alt={props.jobno_oms} onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/150'; }} />
         </div>
     );
     
@@ -529,7 +529,7 @@ function OrderGridWithDetail() {
                 <h3>Data Grid</h3>
                 <p>This sample demonstrates the Grid component's with the detail template feature. It lets users click the expand button in each grid row to display detailed information about that row.</p>
                 <br/>
-                <GridComponent ref={gridRef} dataSource={orderData} detailDataBound={detailDataBound} detailTemplate={gridDetailTemplate} allowSorting={true} allowFiltering={true} filterSettings={{ type: 'CheckBox' }}>
+                <GridComponent ref={gridRef} dataSource={orderData} height='550px' detailDataBound={detailDataBound} detailTemplate={gridDetailTemplate} allowSorting={true} allowFiltering={true} filterSettings={{ type: 'CheckBox' }}>
                     <ColumnsDirective>
                         {/* explicit expand/collapse button column (ensures the button is always visible and independent per row) */}
                         <ColumnDirective headerText='' width='48' template={expandToggleTemplate} textAlign='Center' allowSorting={false} allowFiltering={false} />
