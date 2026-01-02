@@ -1,13 +1,13 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
-import OrderDetails from "./page/Order/OrderDetails";
-import Ordsync from "./page/Order/Ordsync"; // ✅ ensure the path/case matches your file
-import OrdersGridWithDetails from "./page/Order/newprn";
-import SEODashboard from "./page/Dashboard/dashboard";
-import Login from "./components/login";
-import VehicleReport from "./page/Vehicle/vehicle";
-import Entry from "./page/Entryscreen/Entry";
+import Layout from "../src/components/Layout";
+import OrderDetails from "../src/page/Order/OrderDetails";
+import Ordsync from "../src/page/Order/Ordsync"; // ✅ ensure the path/case matches your file
+import OrdersGridWithDetails from "../src/page/Order/newprn";
+import SEODashboard from "../src/page/Dashboard/dashboard";
+import Login from "../src/components/login";
+import VehicleReport from "../src/page/Vehicle/vehicle";
+import Entry from "../src/page/Entryscreen/Entry";
 
 export default function App() {
   return (
