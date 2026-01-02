@@ -90,6 +90,9 @@ export default function Layout() {
           <Link onClick={() => setOpen(false)} to="/details" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Order Details
           </Link>
+          <Link onClick={() => setOpen(false)} to="/ordsync" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+            Order Sync
+          </Link>
           <Link onClick={() => setOpen(false)} to="/OrderGridWithDetail1" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Order Print
           </Link>

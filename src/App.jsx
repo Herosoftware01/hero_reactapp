@@ -1,7 +1,7 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import OrderDetails from './page/Order/OrderDetails';
+import OrderGridWithDetail from './page/Order/OrderDetails';
 import Ordsync from './page/Order/ordsync';
 import OrdersGridWithDetails from './page/Order/newprn';
 import SEODashboard from './page/Dashboard/dashboard';
@@ -17,7 +17,7 @@ export default function App() {
           <Route index element={<Entry />} />
           <Route path="ordsync" element={<Ordsync />} />
           <Route path="Login" element={<Login />} />
-          <Route path="details" element={<OrderDetails />} />
+          <Route path="details" element={<OrderGridWithDetail />} />
           <Route path="OrderGridWithDetail1" element={<OrdersGridWithDetails />} />
           <Route path="SEODashboard" element={<SEODashboard />} />
           <Route path="Vehicle_Report" element={<VehicleReport />} />

@@ -1,13 +1,13 @@
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import OrderDetails from './page/Order/OrderDetails';
-import Ordsync from './page/Order/ordsync';
-import OrdersGridWithDetails from './page/Order/newprn';
-import SEODashboard from './page/Dashboard/dashboard';
-import Login from './components/login'
-import VehicleReport from './page/Vehicle/vehicle';
-import Entry from './page/Entryscreen/Entry';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import OrderDetails from "./page/Order/OrderDetails";
+import Ordsync from "./page/Order/Ordsync"; // ✅ ensure the path/case matches your file
+import OrdersGridWithDetails from "./page/Order/newprn";
+import SEODashboard from "./page/Dashboard/dashboard";
+import Login from "./components/login";
+import VehicleReport from "./page/Vehicle/vehicle";
+import Entry from "./page/Entryscreen/Entry";
 
 export default function App() {
   return (
@@ -16,13 +16,12 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Entry />} />
           <Route path="ordsync" element={<Ordsync />} />
-          <Route path="login" element={<Login />} />
+          <Route path="Login" element={<Login />} />
           <Route path="details" element={<OrderDetails />} />
           <Route path="OrderGridWithDetail1" element={<OrdersGridWithDetails />} />
           <Route path="SEODashboard" element={<SEODashboard />} />
           <Route path="Vehicle_Report" element={<VehicleReport />} />
         </Route>
-
       </Routes>
     </BrowserRouter>
   );
