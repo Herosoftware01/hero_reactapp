@@ -84,7 +84,7 @@ export default function Layout() {
           <Link onClick={() => setOpen(false)} to="/" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Home
           </Link>
-          <Link onClick={() => setOpen(false)} to="/login" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+          <Link onClick={() => setOpen(false)} to="/Login" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Login Form
           </Link>
           <Link onClick={() => setOpen(false)} to="/details" className="block px-3 py-2 rounded-lg hover:bg-white/20">
@@ -110,6 +110,27 @@ export default function Layout() {
           </Link>
            <Link onClick={() => setOpen(false)} to="card-details" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Card-Details
+          </Link>
+           <Link onClick={() => setOpen(false)} to="Apps13" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+       Server
+
+          </Link>
+           <Link onClick={() => setOpen(false)} to="Apps1" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+       Client
+
+          </Link>
+           <Link onClick={() => setOpen(false)} to="Server_Grid" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+      Client side
+
+          </Link>
+           <Link onClick={() => setOpen(false)} to="Server_Grid1" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+      Server Side
+
+          </Link>
+       
+           <Link onClick={() => setOpen(false)} to="Hierarchy" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+      Hierarchy
+
           </Link>
         </nav>
 
