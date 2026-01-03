@@ -111,6 +111,9 @@ export default function Layout() {
            <Link onClick={() => setOpen(false)} to="card-details" className="block px-3 py-2 rounded-lg hover:bg-white/20">
             Card-Details
           </Link>
+              <Link onClick={() => setOpen(false)} to="DetailTemplate" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+     Detail Grid
+        </Link>
            <Link onClick={() => setOpen(false)} to="Apps13" className="block px-3 py-2 rounded-lg hover:bg-white/20">
        Server
 
