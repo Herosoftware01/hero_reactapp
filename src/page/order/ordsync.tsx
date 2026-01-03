@@ -140,22 +140,26 @@ function Ordsync() {
   const assistRef = useRef<AIAssistViewComponent>(null);
 
   const updateRowCounts = () => {
-    const g = gridRef.current as any;
-    if (!g) return;
+  const g = gridRef.current as any;
+  if (!g) return;
 
-    // Current view records (accurate after filter/search/group/page)
-    const currentView =
-      (typeof g.getCurrentViewRecords === "function" && g.getCurrentViewRecords()) ||
-      g.currentViewData ||
-      [];
+  const currentView =
+    typeof g.getCurrentViewRecords === "function"
+      ? g.getCurrentViewRecords()
+      : g.currentViewData || [];
 
-    // Total records
-    const ds = g.dataSource || gridData;
-    const total = Array.isArray(ds) ? ds.length : 0;
+  const filtered =
+    typeof g.getFilteredRecords === "function"
+      ? g.getFilteredRecords()
+      : currentView;
 
-    setRowCount(Array.isArray(currentView) ? currentView.length : 0);
-    setTotalCount(total);
-  };
+  const ds = g.dataSource || gridData;
+  const total = Array.isArray(ds) ? ds.length : 0;
+
+  setRowCount(filtered.length);
+  setTotalCount(total);
+ };
+
 
   const fetchData = () => {
     new DataManager({
