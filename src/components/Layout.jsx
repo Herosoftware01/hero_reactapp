@@ -127,6 +127,10 @@ export default function Layout() {
       Server Side
 
           </Link>
+          
+           <Link onClick={() => setOpen(false)} to="DetailTemplate" className="block px-3 py-2 rounded-lg hover:bg-white/20">
+     Detail Grid
+        </Link>
        
            <Link onClick={() => setOpen(false)} to="Hierarchy" className="block px-3 py-2 rounded-lg hover:bg-white/20">
       Hierarchy
