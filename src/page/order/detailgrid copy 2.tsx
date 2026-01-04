@@ -303,14 +303,8 @@ function DetailTemplate() {
                     filterSettings={{ type: 'CheckBox' }}
                 >
                     <ColumnsDirective>
-                                            <ColumnDirective
-  headerText="Top / Bottom"
-  width="150"
-  template={(props) => props.Fabric?.[0]?.topbottom_des || ""}
-/>
                         <ColumnDirective headerText='Image' width='100' template={employeeTemplate} textAlign='Center' allowResizing={false} />
                         <ColumnDirective field="id" headerText='Order ID' isPrimaryKey={true} width='120' allowResizing={true}/>
-
                         <ColumnDirective field="name" headerText='Name' width='150' allowResizing={true} />
                         <ColumnDirective field="dept" headerText='Department' width='150' template={linkTemplate} allowResizing={true}/>
                         <ColumnDirective field="dt" headerText='Date' width='120' allowResizing={true} />
