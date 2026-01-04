@@ -7,13 +7,37 @@ import { KanbanComponent, ColumnsDirective as KanbanColumns, ColumnDirective as 
 // --- RESPONSIVE CSS STYLES ---
 const globalStyles = `
     /* Base Styles */
-    .control-pane { padding: 20px; height: calc(100vh - 20px); display: flex; flex-direction: column; }
-    .control-section { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    /* FIX: Changed from calc(100vh - 20px) to 100% to fill the Layout container */
+    .control-pane { 
+        padding: 10px; 
+        height: 100%; 
+        display: flex; 
+        flex-direction: column; 
+        background-color: #f1f5f9; /* Match bg-slate-100 */
+    }
     
-    .image { padding: 5px; text-align: center; }
-    .image img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e0e0; }
+    .control-section { 
+        flex: 1; 
+        display: flex; 
+        flex-direction: column; 
+        overflow: hidden; 
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
     
-    .card-template { width: 100%; display: block; padding: 0; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.13); border-radius: 3px; border: 1px solid #e0e0e0; font-size: 13px; }
+    /* FIX: Increased image size from 50px to 70px for better visibility */
+    .image { padding: 8px; text-align: center; display: flex; justify-content: center; align-items: center; }
+    .image img { 
+        width: 70px; 
+        height: 70px; 
+        border-radius: 50%; 
+        object-fit: cover; 
+        border: 2px solid #e0e0e0; 
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .card-template { width: 100%; display: block; padding: 0; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.13); border-radius: 4px; border: 1px solid #e0e0e0; font-size: 13px; }
     .card-template-wrap { margin: 0; padding: 10px; width: 100%; }
     .e-card-header-title { font-weight: 600; margin-bottom: 5px; color: #333; }
     .e-card-content { display: block; margin-bottom: 5px; color: #666; word-wrap: break-word; }
@@ -29,25 +53,17 @@ const globalStyles = `
     .print-btn:hover { background-color: #0056b3; }
     
     /* Card Image */
-    .card-thumb { width: 100%; height: 100px; object-fit: cover; border-bottom: 1px solid #eee; margin-bottom: 5px; border-radius: 2px; }
+    .card-thumb { width: 100%; height: 120px; object-fit: cover; border-bottom: 1px solid #eee; margin-bottom: 5px; border-radius: 2px; }
 
     /* RESPONSIVE TWEAKS */
     @media (max-width: 768px) {
         .control-pane { padding: 5px; }
-        .image img { width: 40px; height: 40px; }
-        
-        /* Make Grid text wrap */
-        .e-grid .e-rowcell { white-space: normal; line-height: 1.2; }
-        
-        /* Adjust Cards */
-        .card-template { font-size: 11px; }
+        .image img { width: 50px; height: 50px; }
         .card-thumb { height: 80px; }
-        
-        /* Hide less important columns on mobile via CSS if needed, 
-           or rely on Grid's horizontal scroll */
+        .e-grid .e-rowcell { white-space: normal; line-height: 1.2; }
     }
 
-    /* Kanban Horizontal Scroll for Mobile */
+    /* Kanban Horizontal Scroll */
     .kanban-scroll-container {
         width: 100%;
         overflow-x: auto;
@@ -83,15 +99,16 @@ const ChildDetailContent = (props: any) => {
         if (kanbanPrintingRef.current) kanbanPrintingRef.current.print();
     };
 
-    // 5. Card Template (Shared)
-    const cardTemplate = (cardProps: any) => {
-        const imgUrl = (cardProps.mainimagepath && cardProps.mainimagepath.startsWith('http')) 
-            ? cardProps.mainimagepath 
-            : null;
+    // --- SEPARATE CARD TEMPLATES ---
+    const getImageUrl = (path: string) => {
+        return (path && path.startsWith('http')) ? path : null;
+    };
 
+    const fabricCardTemplate = (cardProps: any) => {
+        const imgUrl = getImageUrl(cardProps.mainimagepath);
         return (
             <div className="card-template">
-                {imgUrl && <img src={imgUrl} className="card-thumb" alt="Item" />}
+                {imgUrl && <img src={imgUrl} className="card-thumb" alt="Fabric Item" />}
                 <div className="e-card-header" style={{padding: imgUrl ? '0 10px' : '10px'}}>
                     <div className="e-card-header-caption">
                         <div className="e-card-header-title e-tooltip-text">
@@ -100,15 +117,29 @@ const ChildDetailContent = (props: any) => {
                     </div>
                 </div>
                 <div className="card-template-wrap" style={{padding: '0 10px 10px 10px'}}>
-                    <div className="e-card-content">
-                        <b>Process:</b> {cardProps.process_des || '-'}
+                    <div className="e-card-content"><b>Process:</b> {cardProps.process_des || '-'}</div>
+                    <div className="e-card-content"><b>Qty:</b> {cardProps.prodqty || '-'}</div>
+                </div>
+            </div>
+        );
+    };
+
+    const printingCardTemplate = (cardProps: any) => {
+        const imgUrl = getImageUrl(cardProps.mainimagepath);
+        return (
+            <div className="card-template">
+                {imgUrl && <img src={imgUrl} className="card-thumb" alt="Printing Item" />}
+                <div className="e-card-header" style={{padding: imgUrl ? '0 10px' : '10px'}}>
+                    <div className="e-card-header-caption">
+                        <div className="e-card-header-title e-tooltip-text">
+                            {cardProps.topbottom_des || cardProps.jobno}
+                        </div>
                     </div>
-                    <div className="e-card-content">
-                        <b>Method:</b> {cardProps.m || '-'}
-                    </div>
-                    <div className="e-card-content">
-                        <b>Qty:</b> {cardProps.prodqty || '-'}
-                    </div>
+                </div>
+                <div className="card-template-wrap" style={{padding: '0 10px 10px 10px'}}>
+                    <div className="e-card-content"><b>Method:</b> {cardProps.m || '-'}</div>
+                    <div className="e-card-content"><b>Type:</b> {cardProps.print_type || '-'}</div>
+                    <div className="e-card-content"><b>Qty:</b> {cardProps.prodqty || '-'}</div>
                 </div>
             </div>
         );
@@ -129,7 +160,6 @@ const ChildDetailContent = (props: any) => {
                             <div style={{ overflow: 'hidden', flexShrink: 0 }}>
                                 <button className="print-btn" onClick={handlePrintFabric}>Print Fabric</button>
                             </div>
-
                             {fabricData.length === 0 ? (
                                 <div style={{textAlign:'center', padding:'20px'}}>No Fabric Data</div>
                             ) : (
@@ -139,7 +169,7 @@ const ChildDetailContent = (props: any) => {
                                         id={`kanban_fabric_${props.id}`} 
                                         keyField="process_des" 
                                         dataSource={fabricData} 
-                                        cardSettings={{ template: cardTemplate, headerField: 'topbottom_des' }}
+                                        cardSettings={{ template: fabricCardTemplate, headerField: 'topbottom_des' }}
                                     >
                                         <KanbanColumns>
                                             <KanbanColumn headerText="G.T.Process" keyField="G.T.Process" />
@@ -161,7 +191,6 @@ const ChildDetailContent = (props: any) => {
                             <div style={{ overflow: 'hidden', flexShrink: 0 }}>
                                 <button className="print-btn" onClick={handlePrintPrinting}>Print Details</button>
                             </div>
-
                             {printingData.length === 0 ? (
                                 <div style={{textAlign:'center', padding:'20px'}}>No Printing Data</div>
                             ) : (
@@ -171,7 +200,7 @@ const ChildDetailContent = (props: any) => {
                                         id={`kanban_printing_${props.id}`} 
                                         keyField="m" 
                                         dataSource={printingData} 
-                                        cardSettings={{ template: cardTemplate, headerField: 'topbottom_des' }}
+                                        cardSettings={{ template: printingCardTemplate, headerField: 'topbottom_des' }}
                                     >
                                         <KanbanColumns>
                                             <KanbanColumn headerText="Not Pending" keyField="not pending" />
@@ -219,7 +248,7 @@ const ChildDetailContent = (props: any) => {
                                     id={`kanban_bala_${props.id}`} 
                                     keyField="m" 
                                     dataSource={printingData.length > 0 ? printingData : fabricData} 
-                                    cardSettings={{ template: cardTemplate, headerField: 'topbottom_des' }}
+                                    cardSettings={{ template: printingCardTemplate, headerField: 'topbottom_des' }}
                                 >
                                     <KanbanColumns>
                                         <KanbanColumn headerText="Dyed" keyField="Dyed" />
@@ -249,7 +278,6 @@ function DetailTemplate() {
             .then(response => response.json())
             .then(data => {
                 console.log("Raw API Data:", data);
-                
                 let finalData: any[] = [];
                 if (Array.isArray(data)) {
                     finalData = data;
@@ -262,7 +290,6 @@ function DetailTemplate() {
                     if (firstArray) finalData = firstArray;
                 }
 
-                console.log("Final Grid Data:", finalData);
                 setGridData(finalData);
                 setLoading(false);
             })
@@ -292,25 +319,25 @@ function DetailTemplate() {
             <div className='control-section'>
                 <GridComponent 
                     dataSource={gridData} 
-                    height="100%" // Responsive Height
-                    width='100%' // Responsive Width
+                    height="100%" 
+                    width='100%'
                     detailTemplate={(args) => <ChildDetailContent {...args} />}
                     allowSorting={true} 
                     allowFiltering={true} 
                     allowPaging={true}
-                    allowTextWrap={true} // KEY: Allow text to wrap on small screens
-                    allowResizing={true}  // KEY: Allow users to resize columns
+                    allowTextWrap={true}
+                    allowResizing={true}
                     filterSettings={{ type: 'CheckBox' }}
                 >
                     <ColumnsDirective>
-                                            <ColumnDirective
-  headerText="Top / Bottom"
-  width="150"
-  template={(props) => props.Fabric?.[0]?.topbottom_des || ""}
-/>
-                        <ColumnDirective headerText='Image' width='100' template={employeeTemplate} textAlign='Center' allowResizing={false} />
+                        <ColumnDirective
+                            headerText="Top / Bottom"
+                            width="150"
+                            template={(props) => props.Fabric?.[0]?.topbottom_des || ""}
+                        />
+                        {/* FIX: Increased width from 100 to 140 and disabled resizing for better image display */}
+                        <ColumnDirective headerText='Image' width='140' template={employeeTemplate} textAlign='Center' allowResizing={false} />
                         <ColumnDirective field="id" headerText='Order ID' isPrimaryKey={true} width='120' allowResizing={true}/>
-
                         <ColumnDirective field="name" headerText='Name' width='150' allowResizing={true} />
                         <ColumnDirective field="dept" headerText='Department' width='150' template={linkTemplate} allowResizing={true}/>
                         <ColumnDirective field="dt" headerText='Date' width='120' allowResizing={true} />
