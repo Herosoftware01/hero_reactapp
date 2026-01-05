@@ -1,29 +1,48 @@
+
+import React from "react";
 import bgImage from "../../assets/HF Main.jpg";
 
 const Entry = () => {
   return (
     <div
-      className="h-full w-full bg-cover bg-center flex items-center justify-center relative overflow-hidden"
-      style={{ 
-        backgroundImage: `url(${bgImage})`,
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover'
-      }}
+      className="
+        relative
+        -mx-4 -mb-20
+        w-[calc(100%+32px)]
+        min-h-[calc(100vh-56px)]
+        flex items-center justify-center
+        overflow-hidden
+      "
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/20 to-black/20"></div>
+      {/* Background Image */}
+      <img
+        src={bgImage}
+        alt="Hero Software Background"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/40" />
 
       {/* Hero Card */}
-      <div className="relative z-10 text-center px-6">
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 
-                        rounded-3xl p-12 shadow-2xl max-w-lg w-full 
-                        transform hover:scale-[1.02] transition-transform duration-500">
-          
-          <span className="text-blue-400 font-bold tracking-[0.3em] text-2xl uppercase mb-4 block">
+      <div className="relative z-10 px-10">
+        <div
+          className="
+            bg-white/20
+            backdrop-blur-xl
+            border border-white/30
+            rounded-3xl
+            px-10 py-10
+            shadow-2xl
+            max-w-xl
+            text-center
+          "
+        >
+          <span className="block text-blue-400 tracking-[0.3em] text-xl font-bold uppercase mb-4">
             Welcome To
           </span>
 
-          <h1 className="text-white text-5xl md:text-6xl font-black tracking-tighter mb-6">
+          <h1 className="text-white text-5xl md:text-6xl font-black">
             HERO <span className="text-blue-500">SOFTWARE</span>
           </h1>
         </div>

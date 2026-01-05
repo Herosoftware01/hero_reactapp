@@ -42,9 +42,6 @@ const globalStyles = `
         /* Adjust Cards */
         .card-template { font-size: 11px; }
         .card-thumb { height: 80px; }
-        
-        /* Hide less important columns on mobile via CSS if needed, 
-           or rely on Grid's horizontal scroll */
     }
 
     /* Kanban Horizontal Scroll for Mobile */
@@ -83,19 +80,24 @@ const ChildDetailContent = (props: any) => {
         if (kanbanPrintingRef.current) kanbanPrintingRef.current.print();
     };
 
-    // 5. Card Template (Shared)
-    const cardTemplate = (cardProps: any) => {
-        const imgUrl = (cardProps.mainimagepath && cardProps.mainimagepath.startsWith('http')) 
-            ? cardProps.mainimagepath 
-            : null;
+    // --- SEPARATE CARD TEMPLATES ---
+
+    // Helper to get image URL to avoid repetition
+    const getImageUrl = (path: string) => {
+        return (path && path.startsWith('http')) ? path : null;
+    };
+
+    // Template specifically for FABRIC cards
+    const fabricCardTemplate = (cardProps: any) => {
+        const imgUrl = getImageUrl(cardProps.mainimagepath);
 
         return (
             <div className="card-template">
-                {imgUrl && <img src={imgUrl} className="card-thumb" alt="Item" />}
+                {imgUrl && <img src={imgUrl} className="card-thumb" alt="Fabric Item" />}
                 <div className="e-card-header" style={{padding: imgUrl ? '0 10px' : '10px'}}>
                     <div className="e-card-header-caption">
                         <div className="e-card-header-title e-tooltip-text">
-                            {cardProps.topbottom_des || cardProps.jobno}
+                            {cardProps.jobno || cardProps.jobno}
                         </div>
                     </div>
                 </div>
@@ -104,11 +106,55 @@ const ChildDetailContent = (props: any) => {
                         <b>Process:</b> {cardProps.process_des || '-'}
                     </div>
                     <div className="e-card-content">
-                        <b>Method:</b> {cardProps.m || '-'}
+                        <b>color:</b> {cardProps.topbottom_des || '-'}
                     </div>
                     <div className="e-card-content">
-                        <b>Qty:</b> {cardProps.prodqty || '-'}
+                        <b>Fabrictype:</b> {cardProps.m || '-'}
                     </div>
+                    <div className="e-card-content">
+                        <b>Fabric:</b> {cardProps.prodqty || '-'}
+                    </div>
+                    {/* You can add more fabric specific fields here */}
+                </div>
+            </div>
+        );
+    };
+
+    // Template specifically for PRINTING cards
+    const printingCardTemplate = (cardProps: any) => {
+        const imgUrl = getImageUrl(cardProps.mainimagepath);
+
+        return (
+            <div className="card-template">
+                {imgUrl && <img src={imgUrl} className="card-thumb" alt="Printing Item" />}
+                <div className="e-card-header" style={{padding: imgUrl ? '0 10px' : '10px'}}>
+                    <div className="e-card-header-caption">
+                        <div className="e-card-header-title e-tooltip-text">
+                            {cardProps.jobno || cardProps.jobno}
+                        </div>
+                    </div>
+                </div>
+                <div className="card-template-wrap" style={{padding: '0 10px 10px 10px'}}>
+                    <div className="e-card-content">
+                        <b>clrcomb:</b> {cardProps.m || '-'}
+                    </div>
+                    <div className="e-card-content">
+                        <b>Type:</b> {cardProps.print_type || '-'}
+                    </div>
+                    <div className="e-card-content">
+                        <b>print_screen_1:</b> {cardProps.print_screen_1 || '-'}
+                    </div>
+                    <div className="e-card-content">
+                        <b>print_screen_2:</b> {cardProps.print_screen_2 || '-'}
+                    </div>
+                   
+                    <div className="e-card-content">
+                        <b>print_screen_3:</b> {cardProps.print_screen_3 || '-'}
+                    </div>
+                    <div className="e-card-content">
+                        <b>print_description:</b> {cardProps.print_description || '-'}
+                    </div>
+                     {/* You can add more printing specific fields here */}
                 </div>
             </div>
         );
@@ -139,7 +185,7 @@ const ChildDetailContent = (props: any) => {
                                         id={`kanban_fabric_${props.id}`} 
                                         keyField="process_des" 
                                         dataSource={fabricData} 
-                                        cardSettings={{ template: cardTemplate, headerField: 'topbottom_des' }}
+                                        cardSettings={{ template: fabricCardTemplate, headerField: 'topbottom_des' }}
                                     >
                                         <KanbanColumns>
                                             <KanbanColumn headerText="G.T.Process" keyField="G.T.Process" />
@@ -171,7 +217,7 @@ const ChildDetailContent = (props: any) => {
                                         id={`kanban_printing_${props.id}`} 
                                         keyField="m" 
                                         dataSource={printingData} 
-                                        cardSettings={{ template: cardTemplate, headerField: 'topbottom_des' }}
+                                        cardSettings={{ template: printingCardTemplate, headerField: 'topbottom_des' }}
                                     >
                                         <KanbanColumns>
                                             <KanbanColumn headerText="Not Pending" keyField="not pending" />
@@ -219,7 +265,7 @@ const ChildDetailContent = (props: any) => {
                                     id={`kanban_bala_${props.id}`} 
                                     keyField="m" 
                                     dataSource={printingData.length > 0 ? printingData : fabricData} 
-                                    cardSettings={{ template: cardTemplate, headerField: 'topbottom_des' }}
+                                    cardSettings={{ template: printingCardTemplate, headerField: 'topbottom_des' }}
                                 >
                                     <KanbanColumns>
                                         <KanbanColumn headerText="Dyed" keyField="Dyed" />
@@ -303,14 +349,13 @@ function DetailTemplate() {
                     filterSettings={{ type: 'CheckBox' }}
                 >
                     <ColumnsDirective>
-                                            <ColumnDirective
-                    headerText="Top / Bottom"
-                    width="150"
-                    template={(props) => props.Fabric?.[0]?.topbottom_des || ""}
-/>
+                        <ColumnDirective
+                            headerText="Top / Bottom"
+                            width="150"
+                            template={(props) => props.Fabric?.[0]?.topbottom_des || ""}
+                        />
                         <ColumnDirective headerText='Image' width='100' template={employeeTemplate} textAlign='Center' allowResizing={false} />
                         <ColumnDirective field="id" headerText='Order ID' isPrimaryKey={true} width='120' allowResizing={true}/>
-
                         <ColumnDirective field="name" headerText='Name' width='150' allowResizing={true} />
                         <ColumnDirective field="dept" headerText='Department' width='150' template={linkTemplate} allowResizing={true}/>
                         <ColumnDirective field="dt" headerText='Date' width='120' allowResizing={true} />
