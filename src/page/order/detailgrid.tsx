@@ -134,13 +134,18 @@ const ChildDetailContent = (props: any) => {
                         </div>
                     </div>
                 </div>
+                    <div className="e-card-content">
+                        <b>topbottom:</b> {cardProps.top_bottom || '-'}
+                    </div>
+               
+                    <div className="e-card-content">
+                        <b>individual_part_print_emb:</b> {cardProps.individual_part_print_emb || '-'}
+                    </div>
                 <div className="card-template-wrap" style={{padding: '0 10px 10px 10px'}}>
                     <div className="e-card-content">
-                        <b>clrcomb:</b> {cardProps.m || '-'}
+                        <b>prnclr:</b> {cardProps.topbottom_des || '-'}
                     </div>
-                    <div className="e-card-content">
-                        <b>Type:</b> {cardProps.print_type || '-'}
-                    </div>
+          
                     <div className="e-card-content">
                         <b>print_screen_1:</b> {cardProps.print_screen_1 || '-'}
                     </div>
@@ -151,6 +156,26 @@ const ChildDetailContent = (props: any) => {
                     <div className="e-card-content">
                         <b>print_screen_3:</b> {cardProps.print_screen_3 || '-'}
                     </div>
+                    <div className="e-card-content">
+                        <b>print_colours:</b> {cardProps.print_colours || '-'}
+                    </div>
+        
+                    <div className="e-card-content">
+                        <b>inside_outside_print_emb:</b> {cardProps.inside_outside_print_emb || '-'}
+                    </div>
+                       <div className="e-card-content">
+                        <b>prnimg:</b> {cardProps.prnfile1 || '-'}
+                    </div>
+              
+                       <div className="e-card-content">
+                        <b>rgb:</b> {cardProps.rgb || '-'}
+                    </div>
+                    <div className="e-card-content">
+                        <b>Type:</b> {cardProps.print_type || '-'}
+                    </div>
+              
+              
+   
                     <div className="e-card-content">
                         <b>print_description:</b> {cardProps.print_description || '-'}
                     </div>

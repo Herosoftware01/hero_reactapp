@@ -19,6 +19,7 @@ import Server_Grid from './page/order/Client and Server/servergrid';
 import Server_Grid1 from './page/order/Client and Server/servergrid1';
 // import DetailTemplate from './page/detailgrid';
 import DetailTemplate from "./page/order/detailgrid"; 
+import GanttChartDefaultFunctionalities from "./page/order/chart"; 
 // import Grid1 from './page/order/Gridclient';
 
 export default function App() {
@@ -44,6 +45,7 @@ export default function App() {
            <Route path="/server_grid" element={<Server_Grid />} />
            <Route path="/server_grid1" element={<Server_Grid1 />} />
            <Route path="/DetailTemplate" element={<DetailTemplate />} />
+           <Route path="/GanttChart" element={<GanttChartDefaultFunctionalities />} />
            {/* <Route path="Apps1" element={<Apps1 />} /> */}
         </Route>
 
