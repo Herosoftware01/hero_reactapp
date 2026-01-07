@@ -36,7 +36,12 @@ export default defineConfig({
         ]
       },
       workbox: {
-      maximumFileSizeToCacheInBytes: 10 * 1024 * 1024 
+        runtimeCaching: [{
+            urlPattern: ({ request }) => request.destination === 'document',
+            handler: 'NetworkFirst'
+          }
+        ],
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024 
       }
     })
   ],
