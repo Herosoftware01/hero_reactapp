@@ -85,6 +85,7 @@ export default function Layout() {
           <Link to="Vehicle_Report" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg hover:bg-white/20">Vehicle Report</Link>
           <Link to="card" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg hover:bg-white/20">Card‑Admin</Link>
           <Link to="card-details" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg hover:bg-white/20">Card‑Details</Link>
+          <Link to="grey-app" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg hover:bg-white/20">Grey Roll Checking</Link>
           <Link to="DetailTemplate" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg hover:bg-white/20">Detail Grid</Link>
           <Link to="GanttChart" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg hover:bg-white/20">GanttChart Grid</Link>
           <Link to="Apps13" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg hover:bg-white/20">Server</Link>

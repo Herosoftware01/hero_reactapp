@@ -22,10 +22,20 @@ import DetailTemplate from "./page/order/detailgrid";
 import GanttChartDefaultFunctionalities from "./page/order/chart"; 
 // import Grid1 from './page/order/Gridclient';
 
+
+// GreyRollChecking
+import GreyLayout from './GreyRollChecking/components/GreyLayout';
+import EntryPage from './GreyRollChecking/pages/EntryPage';
+import Checking from './GreyRollChecking/pages/Checking';
+import RollChecking from './GreyRollChecking/pages/RollChecking';
+import MachineReport from "./GreyRollChecking/components/MachineReport";
+import Machine from './GreyRollChecking/pages/Machine';
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        
         <Route path="/" element={<Layout />}>
           <Route index element={<Entry />} />
           {/* <Route index element={<Entry />} /> */}
@@ -49,67 +59,17 @@ export default function App() {
            {/* <Route path="Apps1" element={<Apps1 />} /> */}
         </Route>
 
+
+        {/* GreyRollChecking */}
+        <Route path="/grey-app" element={<GreyLayout />}>
+            <Route index element={<EntryPage />} />
+            <Route path="/grey-app/machine/:id" element={<Machine />} />
+            <Route path="/grey-app/machine/:id/checking" element={<Checking />} />
+            <Route path="/grey-app/machine/:id/details" element={<RollChecking />} />
+            <Route path="/grey-app/machine/:id/report" element={<MachineReport />} />
+        </Route>
+
       </Routes>
     </BrowserRouter>
   );
 }
-
-
-// /src/App.jsx
-// import React from 'react';
-// import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-// import Layout from './components/Layout';
-// import OrderGridWithDetail from './page/Order/OrderDetails';
-// import Ordsync from './page/Order/ordsync';
-// import OrdersGridWithDetails from './page/Order/newprn';
-// import SEODashboard from './page/Dashboard/dashboard';
-// import Login from './components/login';
-// import VehicleReport from './page/Vehicle/vehicle';
-// import Entry from './page/Entryscreen/Entry';
-// import Card from './page/Card/Card';
-// import Card2 from './page/Card/Card2';
-
-// import OrderGrid from './page/order/ordergrid'; // ✅ reusable grid component
-// import Apps from './page/order/index';           // ✅ page that renders OrderGrid
-
-// // Example columns reused across routes
-// const commonColumns = [
-//   { field: 'slno',               headerText: 'SL NO',               width: 150 },
-//   { field: 'jobno_oms',          headerText: 'Job No OMS',          width: 120 },
-//   { field: 'production_unit',    headerText: 'Production Unit',     width: 200 },
-//   { field: 'quantity',           headerText: 'Quantity',            width: 120 },
-//   { field: 'shipment_complete',  headerText: 'Shipment Complete',   width: 250 },
-//   { field: 'stylename',          headerText: 'Style Name',          width: 120 },
-// ];
-
-// const ORDERS_URL = 'https://app.herofashion.com/order_panda1/';
-
-// export default function App() {
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         <Route path="/" element={<Layout />}>
-//           <Route index element={<Entry />} />
-//           <Route path="ordsync" element={<Ordsync />} />
-//           <Route path="Login" element={<Login />} />
-//           <Route path="details" element={<OrderGridWithDetail />} />
-//           <Route path="OrderGridWithDetail1" element={<OrdersGridWithDetails />} />
-//           <Route path="SEODashboard" element={<SEODashboard />} />
-//           <Route path="Vehicle_Report" element={<VehicleReport />} />
-//           <Route path="card" element={<Card />} />
-//           <Route path="card-details" element={<Card2 />} />
-
-//           {/* Route: direct reusable grid with props */}
-//           <Route
-//             path="Apps1"
-//             element={<OrderGrid baseUrl={ORDERS_URL} columns={commonColumns} />}
-//           />
-
-//           {/* Route: page that uses OrderGrid internally */}
-//           <Route path="Apps13" element={<Apps />} />
-//         </Route>
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// }
