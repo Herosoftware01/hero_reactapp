@@ -31,6 +31,18 @@ const globalStyles = `
     /* Card Image */
     .card-thumb { width: 100%; height: 100px; object-fit: cover; border-bottom: 1px solid #eee; margin-bottom: 5px; border-radius: 2px; }
 
+    /* RGB Color Swatch Style */
+    .rgb-swatch {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 8px;
+        vertical-align: middle;
+        background-color: #eee; /* Default fallback */
+    }
+
     /* RESPONSIVE TWEAKS */
     @media (max-width: 768px) {
         .control-pane { padding: 5px; }
@@ -53,7 +65,7 @@ const globalStyles = `
     }
 `;
 
-// --- SUB-COMPONENT: CHILD CONTENT ---
+// --- SUB-COMPONENT: CHILD CONTENT (ALL FEATURES) ---
 const ChildDetailContent = (props: any) => {
     
     // 1. Refs for Kanbans
@@ -80,14 +92,14 @@ const ChildDetailContent = (props: any) => {
         if (kanbanPrintingRef.current) kanbanPrintingRef.current.print();
     };
 
-    // --- SEPARATE CARD TEMPLATES ---
+    // --- CARD TEMPLATES ---
 
     // Helper to get image URL to avoid repetition
     const getImageUrl = (path: string) => {
         return (path && path.startsWith('http')) ? path : null;
     };
 
-    // Template specifically for FABRIC cards
+    // Template for FABRIC cards
     const fabricCardTemplate = (cardProps: any) => {
         const imgUrl = getImageUrl(cardProps.mainimagepath);
 
@@ -114,15 +126,15 @@ const ChildDetailContent = (props: any) => {
                     <div className="e-card-content">
                         <b>Fabric:</b> {cardProps.prodqty || '-'}
                     </div>
-                    {/* You can add more fabric specific fields here */}
                 </div>
             </div>
         );
     };
 
-    // Template specifically for PRINTING cards
+    // Template for PRINTING cards (With RGB Visualization)
     const printingCardTemplate = (cardProps: any) => {
         const imgUrl = getImageUrl(cardProps.mainimagepath);
+        const rgbColor = cardProps.rgb || '#cccccc'; // Default fallback color
 
         return (
             <div className="card-template">
@@ -167,19 +179,25 @@ const ChildDetailContent = (props: any) => {
                         <b>prnimg:</b> {cardProps.prnfile1 || '-'}
                     </div>
               
-                       <div className="e-card-content">
-                        <b>rgb:</b> {cardProps.rgb || '-'}
+                       {/* RGB Color Visualization */}
+                       <div className="e-card-content" style={{display: 'flex', alignItems: 'center'}}>
+                        <b>rgb:</b> 
+                        <span 
+                            className="rgb-swatch" 
+                            style={{ backgroundColor: rgbColor }}
+                            title={rgbColor}
+                        ></span>
+                        <span>{rgbColor}</span>
                     </div>
+
                     <div className="e-card-content">
                         <b>Type:</b> {cardProps.print_type || '-'}
                     </div>
-              
               
    
                     <div className="e-card-content">
                         <b>print_description:</b> {cardProps.print_description || '-'}
                     </div>
-                     {/* You can add more printing specific fields here */}
                 </div>
             </div>
         );
@@ -282,7 +300,7 @@ const ChildDetailContent = (props: any) => {
                         </div>
                     )} />
 
-                    {/* TAB 4: BALA */}
+                    {/* TAB 4: BALA (Uses printing template with RGB) */}
                     <TabItemDirective header={{ text: "Bala" }} content={() => (
                         <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                             <div className="kanban-scroll-container">
@@ -363,21 +381,21 @@ function DetailTemplate() {
             <div className='control-section'>
                 <GridComponent 
                     dataSource={gridData} 
-                    height="100%" // Responsive Height
-                    width='100%' // Responsive Width
+                    height="100%" 
+                    width='100%' 
                     detailTemplate={(args) => <ChildDetailContent {...args} />}
                     allowSorting={true} 
                     allowFiltering={true} 
                     allowPaging={true}
-                    allowTextWrap={true} // KEY: Allow text to wrap on small screens
-                    allowResizing={true}  // KEY: Allow users to resize columns
+                    allowTextWrap={true} 
+                    allowResizing={true}  
                     filterSettings={{ type: 'CheckBox' }}
                 >
                     <ColumnsDirective>
                         <ColumnDirective
                             headerText="Top / Bottom"
                             width="150"
-                            template={(props) => props.Fabric?.[0]?.topbottom_des || ""}
+                            template={(props) => props.Fabric?.[0]?.topbottom_des || props.Printing?.[0]?.top_bottom || ""}
                         />
                         <ColumnDirective headerText='Image' width='100' template={employeeTemplate} textAlign='Center' allowResizing={false} />
                         <ColumnDirective field="id" headerText='Order ID' isPrimaryKey={true} width='120' allowResizing={true}/>
