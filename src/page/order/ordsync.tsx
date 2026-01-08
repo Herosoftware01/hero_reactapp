@@ -282,17 +282,6 @@ function Ordsync() {
   };
 
   const onPromptRequest = async (args: PromptRequestEventArgs) => {
-<<<<<<< HEAD
-    const columns =
-      gridRef.current?.columns?.map((c: any) => ({
-        field: c.field,
-        headerText: c.headerText
-      })) ?? [];
-    assistRef.current?.addPrompt({
-      role: "assistant",
-      content: "AI: Data bound & normalized. Try sorting Job No/Style ID/Data Quality."
-    });
-=======
     setPrompts(prev => [
       ...prev,
       {
@@ -300,7 +289,6 @@ function Ordsync() {
         content: "AI: Data bound & normalized. Try sorting Job No / Style ID."
       }
     ]);
->>>>>>> edec92a0b60fea3136301ffd7313ab949cce95e2
   };
 
   const filterSettings: FilterSettingsModel = { type: "Excel" };
@@ -368,11 +356,8 @@ function Ordsync() {
             type="date"
             format="yMd"
           />
-<<<<<<< HEAD
-=======
 
           {/* Status */}
->>>>>>> edec92a0b60fea3136301ffd7313ab949cce95e2
           <ColumnDirective
             field="shipmentcompleted"
             headerText="Status"
