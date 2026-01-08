@@ -63,13 +63,12 @@ export default function Layout() {
       >
         {/* Profile */}
         <div className="p-4">
-          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-pink-400 via-orange-400 to-yellow-300">
+          <div className="flex items-center gap-3 px-5 py-2 rounded-2xl bg-gradient-to-r from-pink-400 via-orange-400 to-yellow-300">
             <div className="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center font-semibold">
               HF
             </div>
             <div>
-              <div className="font-semibold text-sm">HeroFashion</div>
-              <div className="text-xs opacity-90">Control Panel</div>
+              <div className="font-semibold text-sm">HeroSoftware</div>
             </div>
           </div>
         </div>
