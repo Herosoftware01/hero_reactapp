@@ -86,12 +86,31 @@ const ChildDetailContent = (props: any) => {
     const kanbanFabricRef = useRef<any>(null);
     const kanbanPrintingRef = useRef<any>(null);
 
-    // 2. Extract Data
+    // 2. Extract Data and Remove Duplicates
     const fabricData = Array.isArray(props.Fabric) ? props.Fabric : [];
     const printingData = Array.isArray(props.Printing) ? props.Printing : [];
+    
+    // Remove duplicate printing data based on unique combination of fields
+    const uniquePrintingData = printingData.filter((item: any, index: number, self: any[]) => {
+        return index === self.findIndex((t: any) => (
+            t.jobno === item.jobno &&
+            t.top_bottom === item.top_bottom &&
+            t.topbottom_des === item.topbottom_des &&
+            t.individual_part_print_emb === item.individual_part_print_emb
+        ));
+    });
+    
+    // Remove duplicate fabric data
+    const uniqueFabricData = fabricData.filter((item: any, index: number, self: any[]) => {
+        return index === self.findIndex((t: any) => (
+            t.jobno === item.jobno &&
+            t.process_des === item.process_des &&
+            t.topbottom_des === item.topbottom_des
+        ));
+    });
 
     // 3. Chart Data
-    const chartData = fabricData.map((item: any, index: number) => ({
+    const chartData = uniqueFabricData.map((item: any, index: number) => ({
         x: item.topbottom_des || `Fabric ${index}`,
         y: parseFloat(item.prodqty) || 1,
         process: item.process_des
@@ -160,7 +179,7 @@ const ChildDetailContent = (props: any) => {
                         </div>
                     </div>
                 </div>
-                <div className="card-template-wrap" style={{padding: '0 10px 10px 10px', display: 'flex', flexWrap: 'wrap', gap: '10px'}}>
+                <div className="card-template-wrap" style={{padding: '10px', display: 'flex', flexWrap: 'wrap', gap: '8px 15px', alignItems: 'center'}}>
                     <div className="e-card-content-horizontal">
                         <b>topbottom:</b> {cardProps.top_bottom || '-'}
                     </div>
@@ -188,11 +207,11 @@ const ChildDetailContent = (props: any) => {
                     <div className="e-card-content-horizontal">
                         <b>prnimg:</b> {cardProps.prnfile1 || '-'}
                     </div>
-                    <div className="e-card-content-horizontal" style={{display: 'flex', alignItems: 'center'}}>
-                        <b>rgb:</b> 
+                    <div className="e-card-content-horizontal" style={{display: 'inline-flex', alignItems: 'center'}}>
+                        <b style={{marginRight: '5px'}}>rgb:</b> 
                         <span 
                             className="rgb-swatch" 
-                            style={{ backgroundColor: rgbColor, marginLeft: '5px' }}
+                            style={{ backgroundColor: rgbColor }}
                             title={rgbColor}
                         ></span>
                         <span>{rgbColor}</span>
@@ -224,7 +243,7 @@ const ChildDetailContent = (props: any) => {
                                 <button className="print-btn" onClick={handlePrintFabric}>Print Fabric</button>
                             </div>
 
-                            {fabricData.length === 0 ? (
+                            {uniqueFabricData.length === 0 ? (
                                 <div style={{textAlign:'center', padding:'20px'}}>No Fabric Data</div>
                             ) : (
                                 <div className="kanban-scroll-container">
@@ -232,7 +251,7 @@ const ChildDetailContent = (props: any) => {
                                         ref={kanbanFabricRef}
                                         id={`kanban_fabric_${props.id}`} 
                                         keyField="process_des" 
-                                        dataSource={fabricData} 
+                                        dataSource={uniqueFabricData} 
                                         cardSettings={{ template: fabricCardTemplate, headerField: 'topbottom_des' }}
                                     >
                                         <KanbanColumns>
@@ -256,7 +275,7 @@ const ChildDetailContent = (props: any) => {
                                 <button className="print-btn" onClick={handlePrintPrinting}>Print Details</button>
                             </div>
 
-                            {printingData.length === 0 ? (
+                            {uniquePrintingData.length === 0 ? (
                                 <div style={{textAlign:'center', padding:'20px'}}>No Printing Data</div>
                             ) : (
                                 <div className="kanban-scroll-container">
@@ -264,7 +283,7 @@ const ChildDetailContent = (props: any) => {
                                         ref={kanbanPrintingRef}
                                         id={`kanban_printing_${props.id}`} 
                                         keyField="m" 
-                                        dataSource={printingData} 
+                                        dataSource={uniquePrintingData} 
                                         cardSettings={{ template: printingCardTemplate, headerField: 'topbottom_des' }}
                                     >
                                         <KanbanColumns>
@@ -310,7 +329,7 @@ const ChildDetailContent = (props: any) => {
                                 <KanbanComponent 
                                     id={`kanban_bala_${props.id}`} 
                                     keyField="m" 
-                                    dataSource={printingData.length > 0 ? printingData : fabricData} 
+                                    dataSource={uniquePrintingData.length > 0 ? uniquePrintingData : uniqueFabricData} 
                                     cardSettings={{ template: printingCardTemplate, headerField: 'topbottom_des' }}
                                 >
                                     <KanbanColumns>
