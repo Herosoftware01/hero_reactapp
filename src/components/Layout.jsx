@@ -39,16 +39,28 @@ export default function Layout() {
         <div className="fixed inset-0 bg-black/40 z-30 md:hidden" onClick={() => setOpen(false)} />
       )}
 
-      {/* SIDEBAR */}
-      <aside className={`fixed left-0 top-14 h-[calc(100vh-56px)] w-[250px] bg-gradient-to-b from-sky-400 via-indigo-500 to-pink-500 text-white flex flex-col z-40 transition-transform ${open ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
-        
-        {/* Profile Section */}
-        <div className="p-4 mt-4"> 
-          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-pink-400 via-orange-400 to-yellow-300">
-            <div className="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center font-semibold">HF</div>
+      {/* ───────── SIDEBAR ───────── */}
+      <aside
+        className={`
+          fixed left-0 top-14
+          h-[calc(100vh-56px)]
+          w-[250px]
+          bg-gradient-to-b from-sky-400 via-indigo-500 to-pink-500
+          text-white flex flex-col shadow-lg
+          z-40
+          transform transition-transform duration-300
+          ${open ? 'translate-x-0' : '-translate-x-full'}
+          md:translate-x-0
+        `}
+      >
+        {/* Profile */}
+        <div className="p-4">
+          <div className="flex items-center gap-3 px-5 py-2 rounded-2xl bg-gradient-to-r from-pink-400 via-orange-400 to-yellow-300">
+            <div className="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center font-semibold">
+              HF
+            </div>
             <div>
-              <div className="font-semibold text-sm">HeroFashion</div>
-              <div className="text-xs opacity-90">Control Panel</div>
+              <div className="font-semibold text-sm">HeroSoftware</div>
             </div>
           </div>
         </div>
