@@ -365,7 +365,7 @@ function DetailTemplate() {
                     dataSource={gridData} 
                     height="100%" // Responsive Height
                     width='100%' // Responsive Width
-                    detailTemplate={(args) => <ChildDetailContent {...args} />}
+                    detailTemplate={(args: any) => <ChildDetailContent {...args} />}
                     allowSorting={true} 
                     allowFiltering={true} 
                     allowPaging={true}
@@ -377,7 +377,7 @@ function DetailTemplate() {
                         <ColumnDirective
                             headerText="Top / Bottom"
                             width="150"
-                            template={(props) => props.Fabric?.[0]?.topbottom_des || ""}
+                            template={(props: any) => props.Fabric?.[0]?.topbottom_des || ""}
                         />
                         <ColumnDirective headerText='Image' width='100' template={employeeTemplate} textAlign='Center' allowResizing={false} />
                         <ColumnDirective field="id" headerText='Order ID' isPrimaryKey={true} width='120' allowResizing={true}/>

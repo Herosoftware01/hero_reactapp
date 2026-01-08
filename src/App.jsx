@@ -16,8 +16,8 @@ import Hierarchy from './page/order/hierarchy';
 import Server_Grid from './page/order/Client and Server/servergrid';
 import Server_Grid1 from './page/order/Client and Server/servergrid1';
 // import DetailTemplate from './page/detailgrid';
-import DetailTemplate from "./page/order/detailgrid"; 
-import GanttChartDefaultFunctionalities from "./page/order/chart"; 
+import DetailTemplate from "./page/Order/detailgrid"; 
+import GanttChartDefaultFunctionalities from "./page/Order/chart"; 
 // import Grid1 from './page/order/Gridclient';
 
 

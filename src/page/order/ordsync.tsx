@@ -280,17 +280,13 @@ function Ordsync() {
   };
 
   const onPromptRequest = async (args: PromptRequestEventArgs) => {
-    const columns =
-      gridRef.current?.columns?.map((c: any) => ({
-        field: c.field,
-        headerText: c.headerText
-      })) ?? [];
-    // If you have AI:
-    // await fetchAI(args.prompt, gridRef.current!, dialogRef.current!, assistRef.current!, columns);
-    assistRef.current?.addPrompt({
-      role: "assistant",
-      content: "AI: Data bound & normalized. Try sorting Job No/Style ID/Data Quality."
-    });
+    setPrompts(prev => [
+      ...prev,
+      {
+        role: "assistant",
+        content: "AI: Data bound & normalized. Try sorting Job No / Style ID."
+      }
+    ]);
   };
 
   const filterSettings: FilterSettingsModel = { type: "Excel" };
@@ -298,6 +294,7 @@ function Ordsync() {
   // Keep row counts in sync with grid lifecycle/actions
   const onDataBound = () => updateRowCounts();
   const onActionComplete = () => updateRowCounts();
+  const [prompts, setPrompts] = useState<any[]>([]);
 
   return (
     <div id="assistive-grid" style={{ padding: "12px" }}>
@@ -319,6 +316,7 @@ function Ordsync() {
       <DialogComponent ref={dialogRef} width="500px" height="500px" visible={false}>
         <AIAssistViewComponent
           ref={assistRef}
+           prompts={prompts}
           toolbarSettings={toolbarSettings}
           promptRequest={onPromptRequest}
         >
@@ -342,11 +340,6 @@ function Ordsync() {
         toolbarClick={toolbarClick}
         dataBound={onDataBound}
         actionComplete={onActionComplete}
-        noRecordsTemplate={
-          <div style={{ padding: 24, textAlign: "center", color: "#888" }}>
-            No records found. Try Retry or check your file / column mapping.
-          </div>
-        }
       >
         <ColumnsDirective>
           <ColumnDirective field="jobno_oms" headerText="Job No11" width="150" />
@@ -369,9 +362,6 @@ function Ordsync() {
             type="date"
             format="yMd"
           />
-
-          {/* Image (mainimagepath) */}
-          <ColumnDirective headerText="Image" template={imageTemplate} width="100" />
 
           {/* Status */}
           <ColumnDirective
