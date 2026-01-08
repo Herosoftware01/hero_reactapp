@@ -16,7 +16,7 @@ import Server_Grid1 from './page/order/Client and Server/servergrid1';
 import GanttChartDefaultFunctionalities from './page/order/chart';
 
 
-const DetailTemplate = React.lazy(() => import('./page/order/detailgrid'));
+const DetailTemplate = React.lazy(() => import('./page/Order/detailgrid'));
 const OrderGridWithDetail = React.lazy(() => import('./page/Order/OrderDetails'));
 const OrdersGridWithDetails = React.lazy(() => import('./page/Order/newprn'));
 const Card = React.lazy(() => import('./page/Card/Card'));
