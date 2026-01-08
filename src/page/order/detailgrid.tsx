@@ -18,6 +18,15 @@ const globalStyles = `
     .e-card-header-title { font-weight: 600; margin-bottom: 5px; color: #333; }
     .e-card-content { display: block; margin-bottom: 5px; color: #666; word-wrap: break-word; }
     
+    /* Horizontal layout for printing cards */
+    .e-card-content-horizontal {
+        display: inline-block;
+        margin-right: 15px;
+        margin-bottom: 5px;
+        color: #666;
+        white-space: nowrap;
+    }
+    
     .detail-header { font-size: 16px; font-weight: bold; margin-bottom: 10px; color: #333; }
     
     /* Print Button */
@@ -31,6 +40,18 @@ const globalStyles = `
     /* Card Image */
     .card-thumb { width: 100%; height: 100px; object-fit: cover; border-bottom: 1px solid #eee; margin-bottom: 5px; border-radius: 2px; }
 
+    /* RGB Color Swatch Style */
+    .rgb-swatch {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 8px;
+        vertical-align: middle;
+        background-color: #eee; /* Default fallback */
+    }
+
     /* RESPONSIVE TWEAKS */
     @media (max-width: 768px) {
         .control-pane { padding: 5px; }
@@ -42,6 +63,11 @@ const globalStyles = `
         /* Adjust Cards */
         .card-template { font-size: 11px; }
         .card-thumb { height: 80px; }
+        
+        .e-card-content-horizontal {
+            display: block;
+            margin-right: 0;
+        }
     }
 
     /* Kanban Horizontal Scroll for Mobile */
@@ -53,19 +79,38 @@ const globalStyles = `
     }
 `;
 
-// --- SUB-COMPONENT: CHILD CONTENT ---
+// --- SUB-COMPONENT: CHILD CONTENT (ALL FEATURES) ---
 const ChildDetailContent = (props: any) => {
     
     // 1. Refs for Kanbans
     const kanbanFabricRef = useRef<any>(null);
     const kanbanPrintingRef = useRef<any>(null);
 
-    // 2. Extract Data
+    // 2. Extract Data and Remove Duplicates
     const fabricData = Array.isArray(props.Fabric) ? props.Fabric : [];
     const printingData = Array.isArray(props.Printing) ? props.Printing : [];
+    
+    // Remove duplicate printing data based on unique combination of fields
+    const uniquePrintingData = printingData.filter((item: any, index: number, self: any[]) => {
+        return index === self.findIndex((t: any) => (
+            t.jobno === item.jobno &&
+            t.top_bottom === item.top_bottom &&
+            t.topbottom_des === item.topbottom_des &&
+            t.individual_part_print_emb === item.individual_part_print_emb
+        ));
+    });
+    
+    // Remove duplicate fabric data
+    const uniqueFabricData = fabricData.filter((item: any, index: number, self: any[]) => {
+        return index === self.findIndex((t: any) => (
+            t.jobno === item.jobno &&
+            t.process_des === item.process_des &&
+            t.topbottom_des === item.topbottom_des
+        ));
+    });
 
     // 3. Chart Data
-    const chartData = fabricData.map((item: any, index: number) => ({
+    const chartData = uniqueFabricData.map((item: any, index: number) => ({
         x: item.topbottom_des || `Fabric ${index}`,
         y: parseFloat(item.prodqty) || 1,
         process: item.process_des
@@ -80,14 +125,14 @@ const ChildDetailContent = (props: any) => {
         if (kanbanPrintingRef.current) kanbanPrintingRef.current.print();
     };
 
-    // --- SEPARATE CARD TEMPLATES ---
+    // --- CARD TEMPLATES ---
 
     // Helper to get image URL to avoid repetition
     const getImageUrl = (path: string) => {
         return (path && path.startsWith('http')) ? path : null;
     };
 
-    // Template specifically for FABRIC cards
+    // Template for FABRIC cards
     const fabricCardTemplate = (cardProps: any) => {
         const imgUrl = getImageUrl(cardProps.mainimagepath);
 
@@ -114,15 +159,15 @@ const ChildDetailContent = (props: any) => {
                     <div className="e-card-content">
                         <b>Fabric:</b> {cardProps.prodqty || '-'}
                     </div>
-                    {/* You can add more fabric specific fields here */}
                 </div>
             </div>
         );
     };
 
-    // Template specifically for PRINTING cards
+    // Template for PRINTING cards (Horizontal Layout with RGB)
     const printingCardTemplate = (cardProps: any) => {
         const imgUrl = getImageUrl(cardProps.mainimagepath);
+        const rgbColor = cardProps.rgb || '#cccccc'; // Default fallback color
 
         return (
             <div className="card-template">
@@ -134,52 +179,49 @@ const ChildDetailContent = (props: any) => {
                         </div>
                     </div>
                 </div>
-                    <div className="e-card-content">
+                <div className="card-template-wrap" style={{padding: '10px', display: 'flex', flexWrap: 'wrap', gap: '8px 15px', alignItems: 'center'}}>
+                    <div className="e-card-content-horizontal">
                         <b>topbottom:</b> {cardProps.top_bottom || '-'}
                     </div>
-               
-                    <div className="e-card-content">
-                        <b>individual_part_print_emb:</b> {cardProps.individual_part_print_emb || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>individual_part:</b> {cardProps.individual_part_print_emb || '-'}
                     </div>
-                <div className="card-template-wrap" style={{padding: '0 10px 10px 10px'}}>
-                    <div className="e-card-content">
+                    <div className="e-card-content-horizontal">
                         <b>prnclr:</b> {cardProps.topbottom_des || '-'}
                     </div>
-          
-                    <div className="e-card-content">
-                        <b>print_screen_1:</b> {cardProps.print_screen_1 || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>screen_1:</b> {cardProps.print_screen_1 || '-'}
                     </div>
-                    <div className="e-card-content">
-                        <b>print_screen_2:</b> {cardProps.print_screen_2 || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>screen_2:</b> {cardProps.print_screen_2 || '-'}
                     </div>
-                   
-                    <div className="e-card-content">
-                        <b>print_screen_3:</b> {cardProps.print_screen_3 || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>screen_3:</b> {cardProps.print_screen_3 || '-'}
                     </div>
-                    <div className="e-card-content">
-                        <b>print_colours:</b> {cardProps.print_colours || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>colours:</b> {cardProps.print_colours || '-'}
                     </div>
-        
-                    <div className="e-card-content">
-                        <b>inside_outside_print_emb:</b> {cardProps.inside_outside_print_emb || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>inside_outside:</b> {cardProps.inside_outside_print_emb || '-'}
                     </div>
-                       <div className="e-card-content">
+                    <div className="e-card-content-horizontal">
                         <b>prnimg:</b> {cardProps.prnfile1 || '-'}
                     </div>
-              
-                       <div className="e-card-content">
-                        <b>rgb:</b> {cardProps.rgb || '-'}
+                    <div className="e-card-content-horizontal" style={{display: 'inline-flex', alignItems: 'center'}}>
+                        <b style={{marginRight: '5px'}}>rgb:</b> 
+                        <span 
+                            className="rgb-swatch" 
+                            style={{ backgroundColor: rgbColor }}
+                            title={rgbColor}
+                        ></span>
+                        <span>{rgbColor}</span>
                     </div>
-                    <div className="e-card-content">
+                    <div className="e-card-content-horizontal">
                         <b>Type:</b> {cardProps.print_type || '-'}
                     </div>
-              
-              
-   
-                    <div className="e-card-content">
-                        <b>print_description:</b> {cardProps.print_description || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>description:</b> {cardProps.print_description || '-'}
                     </div>
-                     {/* You can add more printing specific fields here */}
                 </div>
             </div>
         );
@@ -201,7 +243,7 @@ const ChildDetailContent = (props: any) => {
                                 <button className="print-btn" onClick={handlePrintFabric}>Print Fabric</button>
                             </div>
 
-                            {fabricData.length === 0 ? (
+                            {uniqueFabricData.length === 0 ? (
                                 <div style={{textAlign:'center', padding:'20px'}}>No Fabric Data</div>
                             ) : (
                                 <div className="kanban-scroll-container">
@@ -209,7 +251,7 @@ const ChildDetailContent = (props: any) => {
                                         ref={kanbanFabricRef}
                                         id={`kanban_fabric_${props.id}`} 
                                         keyField="process_des" 
-                                        dataSource={fabricData} 
+                                        dataSource={uniqueFabricData} 
                                         cardSettings={{ template: fabricCardTemplate, headerField: 'topbottom_des' }}
                                     >
                                         <KanbanColumns>
@@ -226,14 +268,14 @@ const ChildDetailContent = (props: any) => {
                         </div>
                     )} />
 
-                    {/* TAB 2: PRINTING TASKBOARD */}
+                    {/* TAB 2: PRINTING TASKBOARD - Only "Not Pending" Column */}
                     <TabItemDirective header={{ text: "Printing Taskboard" }} content={() => (
                         <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                             <div style={{ overflow: 'hidden', flexShrink: 0 }}>
                                 <button className="print-btn" onClick={handlePrintPrinting}>Print Details</button>
                             </div>
 
-                            {printingData.length === 0 ? (
+                            {uniquePrintingData.length === 0 ? (
                                 <div style={{textAlign:'center', padding:'20px'}}>No Printing Data</div>
                             ) : (
                                 <div className="kanban-scroll-container">
@@ -241,13 +283,11 @@ const ChildDetailContent = (props: any) => {
                                         ref={kanbanPrintingRef}
                                         id={`kanban_printing_${props.id}`} 
                                         keyField="m" 
-                                        dataSource={printingData} 
+                                        dataSource={uniquePrintingData} 
                                         cardSettings={{ template: printingCardTemplate, headerField: 'topbottom_des' }}
                                     >
                                         <KanbanColumns>
                                             <KanbanColumn headerText="Not Pending" keyField="not pending" />
-                                            <KanbanColumn headerText="Pending" keyField="pending" />
-                                            <KanbanColumn headerText="Completed" keyField="completed" />
                                         </KanbanColumns>
                                     </KanbanComponent>
                                 </div>
@@ -282,14 +322,14 @@ const ChildDetailContent = (props: any) => {
                         </div>
                     )} />
 
-                    {/* TAB 4: BALA */}
+                    {/* TAB 4: BALA (Uses printing template with RGB) */}
                     <TabItemDirective header={{ text: "Bala" }} content={() => (
                         <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                             <div className="kanban-scroll-container">
                                 <KanbanComponent 
                                     id={`kanban_bala_${props.id}`} 
                                     keyField="m" 
-                                    dataSource={printingData.length > 0 ? printingData : fabricData} 
+                                    dataSource={uniquePrintingData.length > 0 ? uniquePrintingData : uniqueFabricData} 
                                     cardSettings={{ template: printingCardTemplate, headerField: 'topbottom_des' }}
                                 >
                                     <KanbanColumns>
@@ -363,21 +403,21 @@ function DetailTemplate() {
             <div className='control-section'>
                 <GridComponent 
                     dataSource={gridData} 
-                    height="100%" // Responsive Height
-                    width='100%' // Responsive Width
+                    height="100%" 
+                    width='100%' 
                     detailTemplate={(args: any) => <ChildDetailContent {...args} />}
                     allowSorting={true} 
                     allowFiltering={true} 
                     allowPaging={true}
-                    allowTextWrap={true} // KEY: Allow text to wrap on small screens
-                    allowResizing={true}  // KEY: Allow users to resize columns
+                    allowTextWrap={true} 
+                    allowResizing={true}  
                     filterSettings={{ type: 'CheckBox' }}
                 >
                     <ColumnsDirective>
                         <ColumnDirective
                             headerText="Top / Bottom"
                             width="150"
-                            template={(props: any) => props.Fabric?.[0]?.topbottom_des || ""}
+                            template={(props: any) => props.Fabric?.[0]?.topbottom_des || props.Printing?.[0]?.top_bottom || ""}
                         />
                         <ColumnDirective headerText='Image' width='100' template={employeeTemplate} textAlign='Center' allowResizing={false} />
                         <ColumnDirective field="id" headerText='Order ID' isPrimaryKey={true} width='120' allowResizing={true}/>

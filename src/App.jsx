@@ -1,26 +1,24 @@
+
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import Layout from './components/Layout';
-import OrderGridWithDetail from './page/Order/OrderDetails';
 import Ordsync from './page/Order/ordsync';
-import OrdersGridWithDetails from './page/Order/newprn';
 import SEODashboard from './page/Dashboard/dashboard';
-import Login from './components/login'
+import Login from './components/login';
 import VehicleReport from './page/Vehicle/vehicle';
 import Entry from './page/Entryscreen/Entry';
-// import Grid from './page/order/ordergrid';
 import Apps from './page/order/Client and Server/index';
-// import Apps from './page/order/index';
 import Apps1 from './page/order/Client and Server/index1';
 import Hierarchy from './page/order/hierarchy';
 import Server_Grid from './page/order/Client and Server/servergrid';
 import Server_Grid1 from './page/order/Client and Server/servergrid1';
-// import DetailTemplate from './page/detailgrid';
-import DetailTemplate from "./page/Order/detailgrid"; 
-import GanttChartDefaultFunctionalities from "./page/Order/chart"; 
-// import Grid1 from './page/order/Gridclient';
+import GanttChartDefaultFunctionalities from './page/order/chart';
 
 
+const DetailTemplate = React.lazy(() => import('./page/Order/detailgrid'));
+const OrderGridWithDetail = React.lazy(() => import('./page/Order/OrderDetails'));
+const OrdersGridWithDetails = React.lazy(() => import('./page/Order/newprn'));
 const Card = React.lazy(() => import('./page/Card/Card'));
 const Card2 = React.lazy(() => import('./page/Card/Card2'));
 
