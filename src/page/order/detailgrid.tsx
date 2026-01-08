@@ -3,6 +3,9 @@ import { GridComponent, ColumnsDirective, ColumnDirective, DetailRow, Inject, So
 import { TabComponent, TabItemDirective, TabItemsDirective } from '@syncfusion/ej2-react-navigations';
 import { Category, ChartComponent, Legend, LineSeries, SeriesCollectionDirective, SeriesDirective, Tooltip } from '@syncfusion/ej2-react-charts';
 import { KanbanComponent, ColumnsDirective as KanbanColumns, ColumnDirective as KanbanColumn } from '@syncfusion/ej2-react-kanban';
+import { registerLicense } from '@syncfusion/ej2-base';
+
+registerLicense('Ngo9BigBOggjHTQxAR8/V1JGaF5cXGpCf0x0Q3xbf1x2ZFBMYVlbQHBPMyBoS35Rc0RhW3hedXVQQ2heWUB2VEFf');
 
 // --- RESPONSIVE CSS STYLES ---
 const globalStyles = `
@@ -13,43 +16,131 @@ const globalStyles = `
     .image { padding: 5px; text-align: center; }
     .image img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e0e0; }
     
-    .card-template { width: 100%; display: block; padding: 0; background-color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.13); border-radius: 3px; border: 1px solid #e0e0e0; font-size: 13px; }
-    .card-template-wrap { margin: 0; padding: 10px; width: 100%; }
-    .e-card-header-title { font-weight: 600; margin-bottom: 5px; color: #333; }
-    .e-card-content { display: block; margin-bottom: 5px; color: #666; word-wrap: break-word; }
+    .card-template { 
+        width: 100%; 
+        display: block; 
+        padding: 0; 
+        background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        border-radius: 8px; 
+        border: 1px solid #e3e6e8; 
+        font-size: 13px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    .card-template:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        transform: translateY(-2px);
+    }
+    .card-template-wrap { 
+        margin: 0; 
+        padding: 10px; 
+        width: 100%; 
+        background: white;
+    }
+    .e-card-header-title { 
+        font-weight: 700; 
+        margin-bottom: 5px; 
+        color: #2c3e50;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .e-card-content { 
+        display: block; 
+        margin-bottom: 5px; 
+        color: #555; 
+        word-wrap: break-word; 
+    }
     
     /* Horizontal layout for printing cards */
     .e-card-content-horizontal {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
         margin-right: 15px;
-        margin-bottom: 5px;
-        color: #666;
+        margin-bottom: 8px;
+        padding: 6px 12px;
+        color: #2c3e50;
         white-space: nowrap;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 6px;
+        font-size: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        transition: all 0.2s ease;
+    }
+    .e-card-content-horizontal:hover {
+        background: linear-gradient(135deg, #c3cfe2 0%, #f5f7fa 100%);
+        box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    }
+    .e-card-content-horizontal b {
+        color: #667eea;
+        margin-right: 8px;
+        font-weight: 700;
+        min-width: fit-content;
+    }
+    .e-card-content-horizontal span {
+        color: #2c3e50;
+        font-weight: 500;
     }
     
     .detail-header { font-size: 16px; font-weight: bold; margin-bottom: 10px; color: #333; }
     
     /* Print Button */
     .print-btn {
-        background-color: #007bff; color: white; border: none; padding: 6px 12px;
-        border-radius: 4px; cursor: pointer; font-size: 13px; float: right;
-        margin-bottom: 10px; z-index: 10;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        float: right;
+        margin-bottom: 15px;
+        z-index: 10;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
     }
-    .print-btn:hover { background-color: #0056b3; }
+    .print-btn:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        transform: translateY(-2px);
+    }
+    .print-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+    }
     
     /* Card Image */
-    .card-thumb { width: 100%; height: 100px; object-fit: cover; border-bottom: 1px solid #eee; margin-bottom: 5px; border-radius: 2px; }
+    .card-thumb { 
+        width: 100%; 
+        height: 120px; 
+        object-fit: cover; 
+        border-bottom: 3px solid #667eea; 
+        margin-bottom: 0; 
+        border-radius: 0;
+        transition: transform 0.3s ease;
+    }
+    .card-template:hover .card-thumb {
+        transform: scale(1.05);
+    }
 
     /* RGB Color Swatch Style */
     .rgb-swatch {
         display: inline-block;
-        width: 20px;
-        height: 20px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        width: 24px;
+        height: 24px;
+        border: 2px solid #fff;
+        border-radius: 6px;
         margin-right: 8px;
         vertical-align: middle;
-        background-color: #eee; /* Default fallback */
+        background-color: #eee;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.3);
+        transition: transform 0.2s ease;
+    }
+    .rgb-swatch:hover {
+        transform: scale(1.2);
     }
 
     /* RESPONSIVE TWEAKS */
@@ -172,55 +263,59 @@ const ChildDetailContent = (props: any) => {
         return (
             <div className="card-template">
                 {imgUrl && <img src={imgUrl} className="card-thumb" alt="Printing Item" />}
-                <div className="e-card-header" style={{padding: imgUrl ? '0 10px' : '10px'}}>
+                <div className="e-card-header" style={{padding: '15px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', borderBottom: '1px solid rgba(255,255,255,0.2)'}}>
                     <div className="e-card-header-caption">
-                        <div className="e-card-header-title e-tooltip-text">
-                            {cardProps.jobno || cardProps.jobno}
+                        <div className="e-card-header-title e-tooltip-text" style={{color: '#ffffff', textShadow: '0 2px 4px rgba(0,0,0,0.2)', marginBottom: '8px'}}>
+                            {cardProps.jobno || 'N/A'}
+                        </div>
+                        <div style={{display: 'flex', flexWrap: 'wrap', gap: '8px', fontSize: '12px', color: 'rgba(255,255,255,0.95)'}}>
+                            <span style={{background: 'rgba(255,255,255,0.2)', padding: '4px 10px', borderRadius: '4px', fontWeight: '600'}}>
+                                <b>Top/Bottom:</b> {cardProps.top_bottom || '-'}
+                            </span>
+                            <span style={{background: 'rgba(255,255,255,0.2)', padding: '4px 10px', borderRadius: '4px', fontWeight: '600'}}>
+                                <b>Color:</b> {cardProps.topbottom_des || '-'}
+                            </span>
+                            <span style={{background: 'rgba(255,255,255,0.2)', padding: '4px 10px', borderRadius: '4px', fontWeight: '600'}}>
+                                <b>Type:</b> {cardProps.print_type || '-'}
+                            </span>
                         </div>
                     </div>
                 </div>
-                <div className="card-template-wrap" style={{padding: '10px', display: 'flex', flexWrap: 'wrap', gap: '8px 15px', alignItems: 'center'}}>
+                <div className="card-template-wrap" style={{padding: '15px', display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center'}}>
                     <div className="e-card-content-horizontal">
-                        <b>topbottom:</b> {cardProps.top_bottom || '-'}
+                        <b>individual_part:</b> <span>{cardProps.individual_part_print_emb || '-'}</span>
                     </div>
                     <div className="e-card-content-horizontal">
-                        <b>individual_part:</b> {cardProps.individual_part_print_emb || '-'}
+                        <b>screen_1:</b> <span>{cardProps.print_screen_1 || '-'}</span>
                     </div>
                     <div className="e-card-content-horizontal">
-                        <b>prnclr:</b> {cardProps.topbottom_des || '-'}
+                        <b>screen_2:</b> <span>{cardProps.print_screen_2 || '-'}</span>
                     </div>
                     <div className="e-card-content-horizontal">
-                        <b>screen_1:</b> {cardProps.print_screen_1 || '-'}
+                        <b>screen_3:</b> <span>{cardProps.print_screen_3 || '-'}</span>
                     </div>
                     <div className="e-card-content-horizontal">
-                        <b>screen_2:</b> {cardProps.print_screen_2 || '-'}
+                        <b>colours:</b> <span>{cardProps.print_colours || '-'}</span>
                     </div>
                     <div className="e-card-content-horizontal">
-                        <b>screen_3:</b> {cardProps.print_screen_3 || '-'}
+                        <b>inside_outside:</b> <span>{cardProps.inside_outside_print_emb || '-'}</span>
                     </div>
                     <div className="e-card-content-horizontal">
-                        <b>colours:</b> {cardProps.print_colours || '-'}
-                    </div>
-                    <div className="e-card-content-horizontal">
-                        <b>inside_outside:</b> {cardProps.inside_outside_print_emb || '-'}
-                    </div>
-                    <div className="e-card-content-horizontal">
-                        <b>prnimg:</b> {cardProps.prnfile1 || '-'}
+                        <b>prnimg:</b> <span>{cardProps.prnfile1 || '-'}</span>
                     </div>
                     <div className="e-card-content-horizontal" style={{display: 'inline-flex', alignItems: 'center'}}>
-                        <b style={{marginRight: '5px'}}>rgb:</b> 
-                        <span 
-                            className="rgb-swatch" 
-                            style={{ backgroundColor: rgbColor }}
-                            title={rgbColor}
-                        ></span>
-                        <span>{rgbColor}</span>
+                        <b>rgb:</b>
+                        <span style={{display: 'flex', alignItems: 'center'}}>
+                            <span 
+                                className="rgb-swatch" 
+                                style={{ backgroundColor: rgbColor, marginRight: '6px' }}
+                                title={rgbColor}
+                            ></span>
+                            {rgbColor}
+                        </span>
                     </div>
                     <div className="e-card-content-horizontal">
-                        <b>Type:</b> {cardProps.print_type || '-'}
-                    </div>
-                    <div className="e-card-content-horizontal">
-                        <b>description:</b> {cardProps.print_description || '-'}
+                        <b>description:</b> <span>{cardProps.print_description || '-'}</span>
                     </div>
                 </div>
             </div>

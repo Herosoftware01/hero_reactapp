@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -132,34 +131,33 @@ function Ordsync() {
   const [apiAvailable, setApiAvailable] = useState(true);
 
   // Row count states
-  const [rowCount, setRowCount] = useState(0);   // current view count (after filter/search/group/page)
-  const [totalCount, setTotalCount] = useState(0); // total records bound to grid
+  const [rowCount, setRowCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
 
   const gridRef = useRef<GridComponent>(null);
   const dialogRef = useRef<DialogComponent>(null);
   const assistRef = useRef<AIAssistViewComponent>(null);
 
   const updateRowCounts = () => {
-  const g = gridRef.current as any;
-  if (!g) return;
+    const g = gridRef.current as any;
+    if (!g) return;
 
-  const currentView =
-    typeof g.getCurrentViewRecords === "function"
-      ? g.getCurrentViewRecords()
-      : g.currentViewData || [];
+    const currentView =
+      typeof g.getCurrentViewRecords === "function"
+        ? g.getCurrentViewRecords()
+        : g.currentViewData || [];
 
-  const filtered =
-    typeof g.getFilteredRecords === "function"
-      ? g.getFilteredRecords()
-      : currentView;
+    const filtered =
+      typeof g.getFilteredRecords === "function"
+        ? g.getFilteredRecords()
+        : currentView;
 
-  const ds = g.dataSource || gridData;
-  const total = Array.isArray(ds) ? ds.length : 0;
+    const ds = g.dataSource || gridData;
+    const total = Array.isArray(ds) ? ds.length : 0;
 
-  setRowCount(filtered.length);
-  setTotalCount(total);
- };
-
+    setRowCount(filtered.length);
+    setTotalCount(total);
+  };
 
   const fetchData = () => {
     new DataManager({
@@ -173,12 +171,10 @@ function Ordsync() {
         setGridData(normalized);
         setApiAvailable(Array.isArray(e.result));
 
-        // Ensure immediate render (fix for "shows only after sort")
         if (gridRef.current) {
           gridRef.current.dataSource = normalized;
           gridRef.current.refresh();
         }
-        // Update counts after data bind
         updateRowCounts();
       })
       .catch(() => {
@@ -197,22 +193,30 @@ function Ordsync() {
     fetchData();
   }, []);
 
-  // Keep counts in sync when gridData changes
   useEffect(() => {
     updateRowCounts();
   }, [gridData]);
 
   const handleTopNavigate = () => navigate("/details");
 
-  const imageTemplate = (props: OrderRow) => (
-    <img
-      src={props.mainimagepath}
-      width={50}
-      height={50}
-      onError={(e: any) => (e.target.src = "/placeholder.png")}
-      alt=""
-    />
-  );
+  // Fixed image template with stable key and error handling
+  const imageTemplate = (props: OrderRow) => {
+    const [imgSrc, setImgSrc] = useState(props.mainimagepath);
+    
+    return (
+      <img
+        src={imgSrc}
+        width={50}
+        height={50}
+        style={{ display: 'block' }}
+        onError={(e: any) => {
+          e.target.onerror = null; // Prevent infinite loop
+          setImgSrc('/placeholder.png');
+        }}
+        alt=""
+      />
+    );
+  };
 
   const statusTemplate = (props: OrderRow) => (
     <span
@@ -224,7 +228,6 @@ function Ordsync() {
     </span>
   );
 
-  // Row count badge shown on right side of toolbar
   const RowCountBadge = () => (
     <div
       className="row-count-badge"
@@ -273,7 +276,6 @@ function Ordsync() {
         gridRef.current?.clearSorting();
         gridRef.current?.clearFiltering();
         gridRef.current?.clearGrouping();
-        // Update counts after clearing operations
         setTimeout(updateRowCounts, 0);
       }
     }
@@ -285,8 +287,6 @@ function Ordsync() {
         field: c.field,
         headerText: c.headerText
       })) ?? [];
-    // If you have AI:
-    // await fetchAI(args.prompt, gridRef.current!, dialogRef.current!, assistRef.current!, columns);
     assistRef.current?.addPrompt({
       role: "assistant",
       content: "AI: Data bound & normalized. Try sorting Job No/Style ID/Data Quality."
@@ -295,13 +295,11 @@ function Ordsync() {
 
   const filterSettings: FilterSettingsModel = { type: "Excel" };
 
-  // Keep row counts in sync with grid lifecycle/actions
   const onDataBound = () => updateRowCounts();
   const onActionComplete = () => updateRowCounts();
 
   return (
     <div id="assistive-grid" style={{ padding: "12px" }}>
-      {/* Top button */}
       <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 10 }}>
         <button className="e-btn e-primary" onClick={handleTopNavigate}>
           Go to Details
@@ -315,7 +313,6 @@ function Ordsync() {
         </div>
       )}
 
-      {/* AI Dialog */}
       <DialogComponent ref={dialogRef} width="500px" height="500px" visible={false}>
         <AIAssistViewComponent
           ref={assistRef}
@@ -328,7 +325,6 @@ function Ordsync() {
         </AIAssistViewComponent>
       </DialogComponent>
 
-      {/* Grid */}
       <GridComponent
         ref={gridRef}
         dataSource={gridData}
@@ -349,18 +345,14 @@ function Ordsync() {
         }
       >
         <ColumnsDirective>
-          <ColumnDirective field="jobno_oms" headerText="Job No11" width="150" />
-          <ColumnDirective headerText="Image" template={imageTemplate} width="100" />
-          <ColumnDirective field="styleid" headerText="Style ID Local" width="140" type="number" />
+          <ColumnDirective field="jobno_oms" headerText="Job No" width="150" />
+          <ColumnDirective headerText="Image" template={imageTemplate} width="100" textAlign="Center" />
+          <ColumnDirective field="styleid" headerText="Style ID" width="140" type="number" />
           <ColumnDirective field="company_name" headerText="Company" width="200" />
           <ColumnDirective field="pono" headerText="PO No" width="120" />
           <ColumnDirective field="reference" headerText="Reference" width="250" />
-
-          {/* Data quality helpers */}
           <ColumnDirective field="validationStatus" headerText="Data Quality" width="130" />
           <ColumnDirective field="validationNotes" headerText="Issues" width="250" />
-
-          {/* Optional dates */}
           <ColumnDirective field="podate" headerText="PO Date" width="140" type="date" format="yMd" />
           <ColumnDirective
             field="final_delivery_date"
@@ -369,11 +361,6 @@ function Ordsync() {
             type="date"
             format="yMd"
           />
-
-          {/* Image (mainimagepath) */}
-          <ColumnDirective headerText="Image" template={imageTemplate} width="100" />
-
-          {/* Status */}
           <ColumnDirective
             field="shipmentcompleted"
             headerText="Status"
