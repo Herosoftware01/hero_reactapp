@@ -1,17 +1,59 @@
-
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import Chart from "chart.js/auto";
+import React, { useEffect, useMemo, useState } from "react";
 
 /* =================== API =================== */
 const API_BASE = "http://127.0.0.1:8000";
 const LIST_ENDPOINT = `${API_BASE}/grid_api_11/`;
 
 /* =================== UTILS =================== */
-const normStr = (v) =>
+const normStr = (v: string | null | undefined) =>
   String(v ?? "").replace(/[\u200B-\u200D\uFEFF]/g, "").trim().toUpperCase();
 
+/* =================== TYPES =================== */
+interface Detail {
+  jobno: string;
+  top_bottom: string;
+  print_type: string;
+  print_description: string;
+  punit_sh: string;
+  color_combination: string;
+  inside_outside: string;
+  rgb: string;
+  print_screen_1?: string;
+  print_screen_2?: string;
+  print_screen_3?: string;
+  print_image?: string;
+}
+
+interface Card {
+  id: number;
+  title: string;
+  desc: string;
+  meta: {
+    unit: string;
+    combo: string;
+    inside_outside: string;
+    rgb: string;
+    screens: string[];
+    image?: string;
+  };
+}
+
+interface Order {
+  id: number;
+  jobno: string;
+  director?: string;
+  quality_controller: string;
+  abc: string;
+  Printing: string;
+  Emb?: string;
+  order_follow_up: string;
+  final_year: string;
+  final_delivery_date: string;
+  details?: Detail[];
+}
+
 /* =================== IMAGE =================== */
-function GridImage({ src, size = 36 }) {
+function GridImage({ src, size = 36 }: { src?: string; size?: number }) {
   const [ok, setOk] = useState(true);
   useEffect(() => setOk(true), [src]);
 
@@ -32,12 +74,13 @@ function GridImage({ src, size = 36 }) {
       className="object-cover rounded"
       loading="lazy"
       onError={() => setOk(false)}
+      alt=""
     />
   );
 }
 
 /* =================== CHEVRON =================== */
-function Chevron({ open, onClick }) {
+function Chevron({ open, onClick }: { open: boolean; onClick: () => void }) {
   return (
     <button
       onClick={onClick}
@@ -59,8 +102,16 @@ function Chevron({ open, onClick }) {
 }
 
 /* =================== DETAILS → BOARD =================== */
-function detailsToBoard(details = []) {
-  const groups = { TOP: [], BOTTOM: [], OTHER: [] };
+function detailsToBoard(details: Detail[] = []): {
+  todo: Card[];
+  inProgress: Card[];
+  done: Card[];
+} {
+  const groups: { TOP: Card[]; BOTTOM: Card[]; OTHER: Card[] } = {
+    TOP: [],
+    BOTTOM: [],
+    OTHER: [],
+  };
 
   details.forEach((d, i) => {
     const bucket =
@@ -71,7 +122,7 @@ function detailsToBoard(details = []) {
         : "OTHER";
 
     const screens = [d.print_screen_1, d.print_screen_2, d.print_screen_3].filter(
-      Boolean
+      (s): s is string => Boolean(s)
     );
 
     groups[bucket].push({
@@ -97,11 +148,11 @@ function detailsToBoard(details = []) {
 }
 
 /* =================== TASKBOARD =================== */
-function Taskboard({ board }) {
+function Taskboard({ board }: { board: { todo: Card[]; inProgress: Card[]; done: Card[] } }) {
   const cols = [
-    { key: "todo", title: "TOP" },
-    { key: "inProgress", title: "BOTTOM" },
-    { key: "done", title: "OTHER" },
+    { key: "todo" as const, title: "TOP" },
+    { key: "inProgress" as const, title: "BOTTOM" },
+    { key: "done" as const, title: "OTHER" },
   ];
 
   return (
@@ -150,6 +201,7 @@ function Taskboard({ board }) {
                       <img
                         src={card.meta.image}
                         className="mt-2 rounded max-w-[160px]"
+                        alt="Print"
                       />
                     )}
                   </div>
@@ -164,7 +216,7 @@ function Taskboard({ board }) {
 }
 
 /* =================== DETAIL PANEL =================== */
-function DetailPanel({ order }) {
+function DetailPanel({ order }: { order: Order }) {
   const board = useMemo(
     () => detailsToBoard(order.details || []),
     [order.details]
@@ -181,7 +233,7 @@ function DetailPanel({ order }) {
 }
 
 /* =================== FETCH =================== */
-async function fetchOrders() {
+async function fetchOrders(): Promise<Order[]> {
   const r = await fetch(LIST_ENDPOINT);
   const j = await r.json();
   return j;
@@ -189,14 +241,14 @@ async function fetchOrders() {
 
 /* =================== MAIN GRID =================== */
 export default function OrdersGridWithDetails() {
-  const [rows, setRows] = useState([]);
-  const [open, setOpen] = useState(new Set());
+  const [rows, setRows] = useState<Order[]>([]);
+  const [open, setOpen] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    fetchOrders().then(setRows);
+    fetchOrders().then(setRows).catch(err => console.error("Fetch error:", err));
   }, []);
 
-  const toggle = (jobno) => {
+  const toggle = (jobno: string) => {
     const n = new Set(open);
     n.has(jobno) ? n.delete(jobno) : n.add(jobno);
     setOpen(n);
@@ -213,48 +265,47 @@ export default function OrdersGridWithDetails() {
         </div>
       </div>
 
-      {/* ✅ Single scroll */}
+      {/* Single scroll */}
       <div className="flex-1 overflow-auto">
         <table className="min-w-full text-sm">
-        
-            <thead className="sticky top-0 bg-white shadow z-10">
-              <tr className="text-left">
-                <th className="px-2 py-2 w-8"></th>
-                <th className="px-2 py-2">director</th>
-                <th className="px-2 py-2">id</th>
-                <th className="px-2 py-2">jobno</th>
-                <th className="px-2 py-2">quality_controller</th>
-                <th className="px-2 py-2">abc</th>
-                <th className="px-2 py-2">Printing</th>
-                <th className="px-2 py-2">Emb</th>
-                <th className="px-2 py-2">order_follow_up</th>
-                <th className="px-2 py-2">final_year</th>
-                <th className="px-1 py-1">final_delivery_date</th>
-              </tr>
-            </thead>
+          <thead className="sticky top-0 bg-white shadow z-10">
+            <tr className="text-left">
+              <th className="px-2 py-2 w-8"></th>
+              <th className="px-2 py-2">director</th>
+              <th className="px-2 py-2">id</th>
+              <th className="px-2 py-2">jobno</th>
+              <th className="px-2 py-2">quality_controller</th>
+              <th className="px-2 py-2">abc</th>
+              <th className="px-2 py-2">Printing</th>
+              <th className="px-2 py-2">Emb</th>
+              <th className="px-2 py-2">order_follow_up</th>
+              <th className="px-2 py-2">final_year</th>
+              <th className="px-1 py-1">final_delivery_date</th>
+            </tr>
+          </thead>
 
           <tbody>
             {rows.map((r) => (
               <React.Fragment key={r.jobno}>
                 <tr className="border-t hover:bg-slate-50">
-                  <td>
+                  <td className="px-2 py-2">
                     <Chevron
                       open={open.has(r.jobno)}
                       onClick={() => toggle(r.jobno)}
                     />
                   </td>
-                  <td>
+                  <td className="px-2 py-2">
                     <GridImage src={r.director} />
                   </td>
-                  <td>{r.id}</td>
-                  <td>{r.jobno}</td>
-                  <td>{r.quality_controller}</td>
-                  <td>{r.abc}</td>
-                  <td>{r.Printing}</td>
-                  <td>{r.Emb ?? "-"}</td>
-                  <td>{r.order_follow_up}</td>
-                  <td>{r.final_year}</td>
-                  <td>{r.final_delivery_date}</td>
+                  <td className="px-2 py-2">{r.id}</td>
+                  <td className="px-2 py-2">{r.jobno}</td>
+                  <td className="px-2 py-2">{r.quality_controller}</td>
+                  <td className="px-2 py-2">{r.abc}</td>
+                  <td className="px-2 py-2">{r.Printing}</td>
+                  <td className="px-2 py-2">{r.Emb ?? "-"}</td>
+                  <td className="px-2 py-2">{r.order_follow_up}</td>
+                  <td className="px-2 py-2">{r.final_year}</td>
+                  <td className="px-1 py-1">{r.final_delivery_date}</td>
                 </tr>
 
                 {open.has(r.jobno) && (
