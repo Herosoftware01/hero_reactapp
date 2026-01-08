@@ -18,6 +18,15 @@ const globalStyles = `
     .e-card-header-title { font-weight: 600; margin-bottom: 5px; color: #333; }
     .e-card-content { display: block; margin-bottom: 5px; color: #666; word-wrap: break-word; }
     
+    /* Horizontal layout for printing cards */
+    .e-card-content-horizontal {
+        display: inline-block;
+        margin-right: 15px;
+        margin-bottom: 5px;
+        color: #666;
+        white-space: nowrap;
+    }
+    
     .detail-header { font-size: 16px; font-weight: bold; margin-bottom: 10px; color: #333; }
     
     /* Print Button */
@@ -54,6 +63,11 @@ const globalStyles = `
         /* Adjust Cards */
         .card-template { font-size: 11px; }
         .card-thumb { height: 80px; }
+        
+        .e-card-content-horizontal {
+            display: block;
+            margin-right: 0;
+        }
     }
 
     /* Kanban Horizontal Scroll for Mobile */
@@ -131,7 +145,7 @@ const ChildDetailContent = (props: any) => {
         );
     };
 
-    // Template for PRINTING cards (With RGB Visualization)
+    // Template for PRINTING cards (Horizontal Layout with RGB)
     const printingCardTemplate = (cardProps: any) => {
         const imgUrl = getImageUrl(cardProps.mainimagepath);
         const rgbColor = cardProps.rgb || '#cccccc'; // Default fallback color
@@ -146,57 +160,48 @@ const ChildDetailContent = (props: any) => {
                         </div>
                     </div>
                 </div>
-                    <div className="e-card-content">
+                <div className="card-template-wrap" style={{padding: '0 10px 10px 10px', display: 'flex', flexWrap: 'wrap', gap: '10px'}}>
+                    <div className="e-card-content-horizontal">
                         <b>topbottom:</b> {cardProps.top_bottom || '-'}
                     </div>
-               
-                    <div className="e-card-content">
-                        <b>individual_part_print_emb:</b> {cardProps.individual_part_print_emb || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>individual_part:</b> {cardProps.individual_part_print_emb || '-'}
                     </div>
-                <div className="card-template-wrap" style={{padding: '0 10px 10px 10px'}}>
-                    <div className="e-card-content">
+                    <div className="e-card-content-horizontal">
                         <b>prnclr:</b> {cardProps.topbottom_des || '-'}
                     </div>
-          
-                    <div className="e-card-content">
-                        <b>print_screen_1:</b> {cardProps.print_screen_1 || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>screen_1:</b> {cardProps.print_screen_1 || '-'}
                     </div>
-                    <div className="e-card-content">
-                        <b>print_screen_2:</b> {cardProps.print_screen_2 || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>screen_2:</b> {cardProps.print_screen_2 || '-'}
                     </div>
-                   
-                    <div className="e-card-content">
-                        <b>print_screen_3:</b> {cardProps.print_screen_3 || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>screen_3:</b> {cardProps.print_screen_3 || '-'}
                     </div>
-                    <div className="e-card-content">
-                        <b>print_colours:</b> {cardProps.print_colours || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>colours:</b> {cardProps.print_colours || '-'}
                     </div>
-        
-                    <div className="e-card-content">
-                        <b>inside_outside_print_emb:</b> {cardProps.inside_outside_print_emb || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>inside_outside:</b> {cardProps.inside_outside_print_emb || '-'}
                     </div>
-                       <div className="e-card-content">
+                    <div className="e-card-content-horizontal">
                         <b>prnimg:</b> {cardProps.prnfile1 || '-'}
                     </div>
-              
-                       {/* RGB Color Visualization */}
-                       <div className="e-card-content" style={{display: 'flex', alignItems: 'center'}}>
+                    <div className="e-card-content-horizontal" style={{display: 'flex', alignItems: 'center'}}>
                         <b>rgb:</b> 
                         <span 
                             className="rgb-swatch" 
-                            style={{ backgroundColor: rgbColor }}
+                            style={{ backgroundColor: rgbColor, marginLeft: '5px' }}
                             title={rgbColor}
                         ></span>
                         <span>{rgbColor}</span>
                     </div>
-
-                    <div className="e-card-content">
+                    <div className="e-card-content-horizontal">
                         <b>Type:</b> {cardProps.print_type || '-'}
                     </div>
-              
-   
-                    <div className="e-card-content">
-                        <b>print_description:</b> {cardProps.print_description || '-'}
+                    <div className="e-card-content-horizontal">
+                        <b>description:</b> {cardProps.print_description || '-'}
                     </div>
                 </div>
             </div>
@@ -244,7 +249,7 @@ const ChildDetailContent = (props: any) => {
                         </div>
                     )} />
 
-                    {/* TAB 2: PRINTING TASKBOARD */}
+                    {/* TAB 2: PRINTING TASKBOARD - Only "Not Pending" Column */}
                     <TabItemDirective header={{ text: "Printing Taskboard" }} content={() => (
                         <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                             <div style={{ overflow: 'hidden', flexShrink: 0 }}>
@@ -264,8 +269,6 @@ const ChildDetailContent = (props: any) => {
                                     >
                                         <KanbanColumns>
                                             <KanbanColumn headerText="Not Pending" keyField="not pending" />
-                                            <KanbanColumn headerText="Pending" keyField="pending" />
-                                            <KanbanColumn headerText="Completed" keyField="completed" />
                                         </KanbanColumns>
                                     </KanbanComponent>
                                 </div>
